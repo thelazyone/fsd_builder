@@ -16,7 +16,7 @@ impl Component for TopMenu {
 
     fn view(&self, _: &Context<Self>) -> Html {
         html! {
-            <div class="top-menu" style="background-color: red;">
+            <div class="top-menu">
                 <span class="title">{"Your Game Title"}</span>
                 <button>{"Clear Roster"}</button>
                 <button>{"Load Roster"}</button>
