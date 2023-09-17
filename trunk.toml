@@ -1,3 +1,4 @@
 [build]
 crate = "fsd_builder"
-target = "static/index.html"
+manifest = "Cargo.toml"
+#target = "static/index.html"

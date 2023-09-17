@@ -2,22 +2,16 @@
 name = "fsd_builder"
 version = "0.1.0"
 edition = "2021"
-
 authors = ["Giacomo Pantalone <giacomo.pantalone@gmail.com>"]
 license = "MIT"
-
-# Add a description for your project
 description = "An Army Builder for Full Spectrum Dominance."
-
-# Repository link
 repository = "https://github.com/thelazyone/fsd_builder"
 
 [dependencies]
-yew = { version = "0.20.0", features = ["csr"] }
+yew = { version = "0.20", features = ["csr"] }
 wasm-bindgen = "0.2.78"
-#wasm-bindgen-futures = "0.4.37"
-
-# Add other dependencies as needed
+wasm-logger = "0.1.0"
+log = "0.4.14"
 
 [dependencies.web-sys]
 version = "0.3.55"
@@ -26,8 +20,5 @@ features = [
     "CanvasRenderingContext2d",
 ]
 
-[lib]
-crate-type = ["cdylib"]
-
-[profile.release]
-lto = true
+# [profile.release]
+# lto = true
