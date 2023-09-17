@@ -17,7 +17,6 @@ impl Component for TopMenu {
     fn view(&self, _: &Context<Self>) -> Html {
         html! {
             <div class="top-menu">
-                <textarea value="TEST2"/>
                 <span class="title">{"Your Game Title"}</span>
                 <button>{"Clear Roster"}</button>
                 <button>{"Load Roster"}</button>

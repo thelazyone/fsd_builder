@@ -18,7 +18,6 @@ impl Component for App {
     fn view(&self, _: &Context<Self>) -> Html {
         html! {
             <div class="app">
-                <textarea value="TEST"/>
                 <TopMenu />
                 <div class="body">
                     <LeftBar />
