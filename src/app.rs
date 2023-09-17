@@ -18,12 +18,20 @@ impl Component for App {
     fn view(&self, _: &Context<Self>) -> Html {
         html! {
             <div class="app">
-                <TopMenu />
-                <div class="body">
-                    <LeftBar />
-                    <MainCanvas />
+                <div class="top-menu">
+                    <TopMenu />
                 </div>
-                <RightBar />
+                <div class="body">
+                    <div class="left-bar">
+                        <LeftBar />
+                    </div>
+                    <div class="main-canvas">
+                        <MainCanvas />
+                    </div>
+                    <div class="right-bar">
+                        <RightBar />
+                    </div>
+                </div>
             </div>
         }
     }

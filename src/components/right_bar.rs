@@ -16,8 +16,13 @@ impl Component for RightBar {
 
     fn view(&self, _: &Context<Self>) -> Html {
         html! {
-            <div class="right-bar">
-                // Add the content for the right bar here
+            <div class="left-bar">
+                <button>{"Unit 1"}</button><br/>
+                <button>{"Unit 2"}</button><br/>
+                <button>{"Unit 3"}</button><br/>
+                <div class="details-section">
+                    // This section will be used to display details in the future
+                </div>
             </div>
         }
     }
