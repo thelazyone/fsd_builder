@@ -11,6 +11,7 @@ use web_sys::Element;
 use crate::app::App;
 
 #[wasm_bindgen]
-pub fn init_app(root: Element) {
+pub fn init_app(root: Element) -> Result<(), JsValue> {
     yew::Renderer::<App>::with_root(root).render();
+    Ok(())
 }
