@@ -41,7 +41,7 @@ impl Component for MainCanvas {
         }
     }
 
-    fn rendered(&mut self, ctx: &Context<Self>, first_render: bool) {
+    fn rendered(&mut self, _ctx: &Context<Self>, first_render: bool) {
         if first_render {
             let canvas: HtmlCanvasElement = web_sys::window()
                 .unwrap()
@@ -51,7 +51,7 @@ impl Component for MainCanvas {
                 .unwrap()
                 .dyn_into::<HtmlCanvasElement>()
                 .unwrap();
-            let context = canvas
+            let _context = canvas
                 .get_context("2d")
                 .unwrap()
                 .unwrap()
