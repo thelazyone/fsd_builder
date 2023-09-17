@@ -1,2 +1,3 @@
 [build]
 crate = "fsd_builder"
+target = "dist/index.html"
