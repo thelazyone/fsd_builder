@@ -1,7 +1,6 @@
 use crate::models::character::Character;
 use crate::models::unit::Unit;
 use crate::models::support::Support;
-use crate::models::element::Element;
 
 pub enum RosterElement {
     ElemCharacter(Character),
@@ -50,4 +49,12 @@ impl Roster {
     fn add_element(&mut self, element: RosterElement) {
         self.elements.push(element);
     }
+
+    // TODO implement
+    // fn check_validity (&self) -> Result(None, ) {
+
+    //     // TODO implement 
+
+    //     Ok();
+    // }
 }

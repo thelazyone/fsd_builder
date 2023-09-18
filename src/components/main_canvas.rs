@@ -49,6 +49,9 @@ impl Component for MainCanvas {
 
     fn update(&mut self, _: &Context<Self>, msg: Self::Message) -> bool {
         match msg {
+
+            // TODO remove deprecated!
+
             Msg::AddUnit => {
                 // Logic to add unit to canvas
             }
@@ -65,6 +68,9 @@ impl Component for MainCanvas {
     fn view(&self, _: &Context<Self>) -> Html {
         html! {
             <div class="central-area">
+                // TODO the canvas should just fill the space!
+                // Possibly even not being a canvas at all, just absolute positioning 
+                // Of HTML buttons.
                 <canvas id="game-canvas" width="800" height="600"></canvas>
             </div>
         }
