@@ -17,10 +17,14 @@ impl Component for TopMenu {
     fn view(&self, _: &Context<Self>) -> Html {
         html! {
             <div class="top-menu">
-                <span class="title">{"Your Game Title"}</span>
-                <button>{"Clear Roster"}</button>
-                <button>{"Load Roster"}</button>
-                <button>{"Export Roster"}</button>
+                <div class="title">
+                    <span class="title">{"FULL SPECTRUM DOMINANCE - ARMY BUILDER"}</span>
+                </div>
+                <div class="menu">
+                    <button>{"Clear Roster"}</button>
+                    <button>{"Load Roster"}</button>
+                    <button>{"Export Roster"}</button>
+                </div>
             </div>
         }
     }

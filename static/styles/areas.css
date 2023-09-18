@@ -1,0 +1,21 @@
+.left-bar, .right-bar, .main-canvas {
+    padding: 10px;
+    box-sizing: border-box;
+    overflow-y: auto;
+}
+
+.left-bar {
+    background-color: transparent;
+    text-align: left;
+}
+
+.right-bar {
+    background-color: transparent;
+    text-align: right;
+}
+
+.main-canvas {
+    background-color: #fff;
+}
+
+  

@@ -1,10 +1,22 @@
 .app {
-    display: flex;
-    flex-direction: column;
+    display: grid;
+    grid-template-rows: auto 1fr;
+    grid-template-columns: 1fr 5fr 1fr;
     height: 100vh;
 }
 
-.body {
-    display: flex;
-    flex: 1;
+.top-menu {
+    grid-column: span 3;
+}
+
+.left-bar {
+    grid-column: 1;
+}
+
+.main-canvas {
+    grid-column: 2;
+}
+
+.right-bar {
+    grid-column: 3;
 }

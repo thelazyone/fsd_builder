@@ -16,7 +16,7 @@ impl Component for RightBar {
 
     fn view(&self, _: &Context<Self>) -> Html {
         html! {
-            <div class="left-bar">
+            <div class="right-bar">
                 <button>{"Unit 1"}</button><br/>
                 <button>{"Unit 2"}</button><br/>
                 <button>{"Unit 3"}</button><br/>

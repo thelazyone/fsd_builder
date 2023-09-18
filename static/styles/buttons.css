@@ -1,0 +1,27 @@
+
+
+
+.left-bar button, .right-bar button {
+    background-color: transparent;
+    border: none;
+    color: black;
+    padding: 15px 12px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    margin: 4px 2px;
+    cursor: pointer;
+    font-weight: bold; /* Make the font bold */
+  }
+
+.left-bar button:hover, .right-bar button:hover {
+    background-color: rgba(220, 220, 220, 0.5);
+    transition: 0.7s;
+}
+
+.button:hover {
+    background-color: rgba(220, 220, 220, 0.5);
+    transition: 0.7s;
+}

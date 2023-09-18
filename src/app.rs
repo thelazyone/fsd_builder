@@ -21,16 +21,14 @@ impl Component for App {
                 <div class="top-menu">
                     <TopMenu />
                 </div>
-                <div class="body">
-                    <div class="left-bar">
-                        <LeftBar />
-                    </div>
-                    <div class="main-canvas">
-                        <MainCanvas />
-                    </div>
-                    <div class="right-bar">
-                        <RightBar />
-                    </div>
+                <div class="left-bar">
+                    <LeftBar />
+                </div>
+                <div class="main-canvas">
+                    <MainCanvas />
+                </div>
+                <div class="right-bar">
+                    <RightBar />
                 </div>
             </div>
         }
