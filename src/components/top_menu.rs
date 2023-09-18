@@ -1,20 +1,41 @@
 use yew::prelude::*;
 
-pub struct TopMenu;
+pub enum Msg {
+    LoadRosterClicked,
+    ClearRosterClicked,
+    SaveRosterClicked,
+}
+
+pub struct TopMenu{
+    on_load_roster: Callback<()>,
+}
+
+#[derive(Properties, Clone, PartialEq)]
+pub struct Props {
+    pub on_load_roster: Callback<()>,
+}
 
 impl Component for TopMenu {
-    type Message = ();
-    type Properties = ();
+    type Message = Msg;
+    type Properties = Props;
 
-    fn create(_: &Context<Self>) -> Self {
-        TopMenu
+    fn create(ctx: &Context<Self>) -> Self {
+        TopMenu {
+            on_load_roster: ctx.props().on_load_roster.clone(),
+        }    
     }
 
-    fn update(&mut self, _ctx: &Context<Self>, _: Self::Message) -> bool {
-        true
+    fn update(&mut self, _: &Context<Self>, msg: Self::Message) -> bool {
+        match msg {
+            Msg::LoadRosterClicked => {
+                self.on_load_roster.emit(()); // Emit the callback when the button is clicked
+                true
+            }
+            _ => panic!("Unhandled message!")
+        }
     }
 
-    fn view(&self, _: &Context<Self>) -> Html {
+    fn view(&self, ctx: &Context<Self>) -> Html {
         html! {
             <div class="top-menu">
                 <div class="title">
@@ -22,7 +43,7 @@ impl Component for TopMenu {
                 </div>
                 <div class="menu">
                     <button>{"Clear Roster"}</button>
-                    <button>{"Load Roster"}</button>
+                    <button onclick={ctx.link().callback(|_| Msg::LoadRosterClicked)}>{"Load Roster"}</button>
                     <button>{"Export Roster"}</button>
                 </div>
             </div>

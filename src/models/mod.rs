@@ -1,4 +1,4 @@
-mod roster;
+pub mod roster;
 mod character;
 mod support;
 mod unit;

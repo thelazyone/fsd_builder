@@ -3,7 +3,7 @@ use crate::models::unit::Unit;
 use crate::models::support::Support;
 use crate::models::element::Element;
 
-enum RosterElement {
+pub enum RosterElement {
     ElemCharacter(Character),
     ElemUnit(Unit),
     ElemSupport(Support),
@@ -28,8 +28,9 @@ impl From<Support> for RosterElement {
     }
 }
 
+
 pub struct Roster {
-    elements : Vec<RosterElement>,
+    pub elements : Vec<RosterElement>,
 }
 
 impl Roster {
@@ -37,17 +38,13 @@ impl Roster {
         Roster {elements: Vec::<RosterElement>::new()}
     }
 
-    pub fn load() -> Roster {
-        let mut roster = Roster::new();
-
+    pub fn load(&mut self) {
         // temporary loading, a for testing only 
-        roster.add_element(Character{name: "char1".to_string(), points:2}.into());
-        roster.add_element(Unit{name: "unit1".to_string(), points:3}.into());
-        roster.add_element(Unit{name: "unit2".to_string(), points:4}.into());
-        roster.add_element(Support{name: "support1".to_string(), points:5}.into());
-        
-        // TODO
-        roster
+        self.elements.clear();
+        self.add_element(Character{name: "char1".to_string(), points:2}.into());
+        self.add_element(Unit{name: "unit1".to_string(), points:3}.into());
+        self.add_element(Unit{name: "unit2".to_string(), points:4}.into());
+        self.add_element(Support{name: "support1".to_string(), points:5}.into());
     }
 
     fn add_element(&mut self, element: RosterElement) {
