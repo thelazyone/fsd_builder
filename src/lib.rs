@@ -5,6 +5,7 @@ mod components {
     pub mod main_canvas;
 }
 mod app;
+mod models;
 
 use wasm_bindgen::prelude::*;
 use crate::app::App;
