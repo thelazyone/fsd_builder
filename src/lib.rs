@@ -6,6 +6,7 @@ mod components {
 }
 mod app;
 mod models;
+mod shared_messages;
 
 use wasm_bindgen::prelude::*;
 use crate::app::App;

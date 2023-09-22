@@ -1,5 +1,6 @@
 use super::element::Element;
 
+#[derive(Clone, PartialEq)]
 pub struct Character {
     pub name : String,
     pub points : u32,

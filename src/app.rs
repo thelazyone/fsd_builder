@@ -12,28 +12,13 @@ use std::cell::RefCell;
 // For browser debugging
 use web_sys::console;
 
-
-pub enum Msg {
-
-    // Roster Manipulation
-    LoadRoster,
-    ClearRoster,
-    SaveRoster, 
-
-    // Elements showing on right bar
-    ShowUnits,
-    ShowCharacters,
-    ShowSupports,
-}
+// A common definition for all messages:
+use crate::shared_messages::SharedMessage;
 
 pub struct App{
 
     // Roster Logic
     roster: Rc<RefCell<Roster>>,
-
-    // State variable to track roster updates. 
-    // This is because I'm lazy and I didn't implement the PartialEq.
-    roster_updated: bool, 
 
     // Right Bar Model:
     right_bar_model: Vec<(String, u32)>,
@@ -41,58 +26,46 @@ pub struct App{
 
 
 impl Component for App {
-    type Message = Msg;
+    type Message = SharedMessage;
     type Properties = ();
 
     fn create(_: &Context<Self>) -> Self {
         App {
             roster: Rc::new(RefCell::new(Roster::new().into())),
-            roster_updated: true,  // Initialize the state variable
             right_bar_model: Vec::<(String, u32)>::new(),
         }
     }
 
-    fn update(&mut self, _: &Context<Self>, msg : Self::Message) -> bool {
+    fn update(&mut self, ctx: &Context<Self>, msg : Self::Message) -> bool {
         match msg {
 
             // Roster Handling
-            Msg::LoadRoster => {
+            // SharedMessage::LoadRoster => {
+            //     console::log_1(&"Called LOAD for the roster".into());
+            //     self.roster.borrow_mut().load(); // Load the roster when the message is received
+            //     false
+            // }
+            // Roster Handling
+            SharedMessage::LoadRoster => {
                 console::log_1(&"Called LOAD for the roster".into());
-                self.roster.borrow_mut().load(); // Load the roster when the message is received
-                self.roster_updated = !self.roster_updated;  // Toggle the state variable
+                self.roster.borrow_mut().load();
+                ctx.link().callback(|_| SharedMessage::NotifyRosterUpdated).emit(());
                 true
             }
-            Msg::SaveRoster => {
+            SharedMessage::SaveRoster => {
 
                 // TODO
 
-                true 
+                false 
             }
-            Msg::ClearRoster => {
-
-                // TODO
-
-                true
-            }
-
-            // Right Bar Visualization
-            Msg::ShowUnits => {
-                self.right_bar_model = armylist::ArmyList::new_tech().get_units().
-                    into_iter().map(|elem| {elem}).collect();
-                true
-            }
-            Msg::ShowCharacters => {
-                self.right_bar_model = armylist::ArmyList::new_tech().get_characters().
-                    into_iter().map(|elem| {elem}).collect();
-                true
-            }
-            Msg::ShowSupports => {
-                self.right_bar_model = armylist::ArmyList::new_tech().get_supports().
-                    into_iter().map(|elem| {elem}).collect();
-                true
+            SharedMessage::ClearRoster => {
+                console::log_1(&"Called CLEAR for the roster".into());
+                self.roster.borrow_mut().clear();
+                ctx.link().callback(|_| SharedMessage::NotifyRosterUpdated).emit(());
+                true            
             }
 
-            _ => panic!("Unhandled message!")
+            _ => false // Passing to the child objects to be handled.
         }    
     }
 
@@ -100,20 +73,29 @@ impl Component for App {
         html! {
             <div class="app">
                 <div class="top-menu">
-                <TopMenu on_load_roster= {ctx.link().callback(|_| Msg::LoadRoster)} />
+                    <TopMenu 
+                        on_load_roster= {ctx.link().callback(|_| SharedMessage::LoadRoster)} 
+                        on_clear_roster= {ctx.link().callback(|_| SharedMessage::ClearRoster)} 
+                        on_save_roster= {ctx.link().callback(|_| SharedMessage::SaveRoster)} 
+                    />
                 </div>
                 <div class="left-bar">
-                <LeftBar
-                    on_show_units= {ctx.link().callback(|_| Msg::ShowUnits)} 
-                    on_show_characters= {ctx.link().callback(|_| Msg::ShowCharacters)} 
-                    on_show_supports= {ctx.link().callback(|_| Msg::ShowSupports)} 
-                />
+                    <LeftBar
+                        on_show_units= {ctx.link().callback(|_| SharedMessage::ShowUnits)} 
+                        on_show_characters= {ctx.link().callback(|_| SharedMessage::ShowCharacters)} 
+                        on_show_supports= {ctx.link().callback(|_| SharedMessage::ShowSupports)} 
+                    />
                 </div>
                 <div class="main-canvas">
-                <MainCanvas roster={self.roster.clone()} roster_updated={self.roster_updated} />
+                    <MainCanvas 
+                        roster={self.roster.clone()} 
+                        on_roster_updated={ctx.link().callback(|_| SharedMessage::NotifyRosterUpdated)}
+                    />
                 </div>
                 <div class="right-bar">
-                    <RightBar model={self.right_bar_model.clone()}/>
+                    <RightBar 
+                        model={self.right_bar_model.clone()}
+                    />
                 </div>
             </div>
         }
