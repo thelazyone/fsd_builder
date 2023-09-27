@@ -21,7 +21,6 @@ pub struct Props {
     pub on_roster_updated: Callback<()>
 }
 
-
 pub struct MainCanvas {
     props: Props,
 }

@@ -9,6 +9,10 @@ use crate::models::armylist::{ArmyList, self};
 use std::rc::Rc;
 use std::cell::RefCell;
 
+// For the file selection
+use wasm_bindgen::JsCast;
+use wasm_bindgen::closure::Closure;
+
 // For browser debugging
 use web_sys::console;
 
@@ -22,6 +26,9 @@ pub struct App{
 
     // Right Bar Model:
     right_bar_model: Vec<(String, u32)>,
+
+    // input file
+    file_input_ref: NodeRef,
 }
 
 
@@ -29,10 +36,27 @@ impl Component for App {
     type Message = SharedMessage;
     type Properties = ();
 
-    fn create(_: &Context<Self>) -> Self {
+    fn create(ctx: &Context<Self>) -> Self {
+        let file_input_ref = NodeRef::default();
+
+        if let Some(input) = file_input_ref.cast::<web_sys::HtmlInputElement>() {
+            let link = ctx.link().clone();
+            let closure = Closure::wrap(Box::new(move |event: web_sys::Event| {
+
+                // Handle the selected file here
+                
+                // ... rest of the code to process the file
+                link.send_message(SharedMessage::FileSelected);
+            }) as Box<dyn FnMut(_)>);
+    
+            input.add_event_listener_with_callback("change", closure.as_ref().unchecked_ref()).unwrap();
+            closure.forget(); // Don't forget to forget the closure to prevent it from being dropped
+        }
+        
         App {
             roster: Rc::new(RefCell::new(Roster::new().into())),
             right_bar_model: Vec::<(String, u32)>::new(),
+            file_input_ref: NodeRef::default(),
         }
     }
 
@@ -47,9 +71,12 @@ impl Component for App {
             // }
             // Roster Handling
             SharedMessage::LoadRoster => {
-                console::log_1(&"Called LOAD for the roster".into());
-                self.roster.borrow_mut().load();
-                ctx.link().callback(|_| SharedMessage::NotifyRosterUpdated).emit(());
+                if let Some(input) = self.file_input_ref.cast::<web_sys::HtmlInputElement>() {
+                    
+                    // This will only trigger the file dialog. Everything else has been set up as a closure
+                    // In the create() method.
+                    input.click(); 
+                }
                 true
             }
             SharedMessage::SaveRoster => {
@@ -97,7 +124,49 @@ impl Component for App {
                         model={self.right_bar_model.clone()}
                     />
                 </div>
-            </div>
+
+            // File Selection Popup
+            <input type="file" ref={self.file_input_ref.clone()} style="display: none" onchange={
+                let link_clone_outer = ctx.link().clone(); // Clone the link outside of the callback
+                let link_clone_inner = link_clone_outer.clone(); // Clone the link for the inner closure
+                link_clone_outer.callback(move |event: web_sys::Event| {
+                    if let Some(target) = event.target() {
+                        if let Ok(input) = target.dyn_into::<web_sys::HtmlInputElement>() {
+                            if let Some(files) = input.files() {
+                                if let Some(file) = files.get(0) {
+                                    
+                                    // Get the name of the file
+                                    let file_name = file.name();
+                                    console::log_1(&format!("Selected file name: {}", file_name).into());
+                        
+                                    // Read the content of the file
+                                    let file_reader = web_sys::FileReader::new().unwrap();
+                                    let file_reader_rc = Rc::new(file_reader); // Wrap the FileReader in an Rc
+                                    let file_reader_clone = file_reader_rc.clone(); // Clone the Rc for the closure
+
+                                     // Clone the link for the onload closure. Yep, another cloning.
+                                    let link_clone_for_onload = link_clone_inner.clone();
+                                    let onload_closure = Closure::wrap(Box::new(move |_event: web_sys::Event| {
+                                        if let Ok(result) = file_reader_clone.result() {
+                                            if let Some(text) = result.as_string() {
+                                                
+                                                link_clone_for_onload.send_message(SharedMessage::FileContentReceived(text));
+                                            }
+                                        }
+                                    }) as Box<dyn FnMut(_)>);
+                        
+                                    file_reader_rc.add_event_listener_with_callback("load", onload_closure.as_ref().unchecked_ref()).unwrap();
+                                    onload_closure.forget();
+                        
+                                    file_reader_rc.read_as_text(&file).unwrap();
+                                }
+                            }
+                        }
+                    }
+                    SharedMessage::NoOp // Return a dummy message
+                })
+            }/>
+        </div>
         }
     }
 }

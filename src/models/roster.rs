@@ -40,7 +40,6 @@ impl Roster {
     }
 
     pub fn load(&mut self) {
-        // temporary loading, a for testing only 
         self.clear();
         self.add_element(Character{name: "char1".to_string(), points:2}.into());
         self.add_element(Unit{name: "unit1".to_string(), points:3}.into());

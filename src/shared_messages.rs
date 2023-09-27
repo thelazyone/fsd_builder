@@ -1,4 +1,6 @@
 pub enum SharedMessage {
+    NoOp, // Dummy message for no-operation
+    
     ClearRoster,
     LoadRoster,
     SaveRoster,
@@ -7,6 +9,10 @@ pub enum SharedMessage {
     ShowCharacters,
     ShowSupports,
 
-    NotifyRosterUpdated
-    // add more in the future
+    NotifyRosterUpdated,
+
+    FileSelected,
+    FileContentReceived(String),
+
+    // Add more if needed
 }
