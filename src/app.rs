@@ -25,6 +25,7 @@ use crate::models::roster::RosterElement;
 #[wasm_bindgen]
 extern "C" {
     fn downloadFile(content: &str, filename: &str);
+    fn downloadFileWithPath(content: &str, default_name: &str);
 }
 
 pub struct App{
@@ -84,9 +85,26 @@ impl Component for App {
             SharedMessage::SaveRoster => {
                 match self.roster.borrow().to_json() {
                     Ok(json_string) => {
-
-                        // Trigger a file download with the JSON string
-                        downloadFile(&json_string, "roster.json");
+                        let document = web_sys::window().unwrap().document().unwrap();
+                        let a = document.create_element("a").unwrap().dyn_into::<web_sys::HtmlAnchorElement>().unwrap();
+                        
+                        // Convert the JSON string to a Blob
+                        let mut blob_parts: web_sys::BlobPropertyBag = web_sys::BlobPropertyBag::new();
+                        blob_parts.type_("application/json");
+                        let blob = web_sys::Blob::new_with_str_sequence_and_options(&js_sys::Array::of1(&json_string.into()), &blob_parts).unwrap();
+                        
+                        // Create an Object URL from the Blob
+                        let url = web_sys::Url::create_object_url_with_blob(&blob).unwrap();
+                        
+                        a.set_href(&url);
+                        a.set_download("roster.json");
+                        a.set_attribute("style", "display: none").unwrap();
+                        document.body().unwrap().append_child(&a).unwrap();
+                        a.click();
+                        a.remove();
+                        
+                        // Clean up the Object URL to free resources
+                        web_sys::Url::revoke_object_url(&url).unwrap();
                     },
                     Err(e) => {
                         console::log_1(&format!("Error serializing roster: {:?}", e).into());
