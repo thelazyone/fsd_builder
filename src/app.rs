@@ -137,6 +137,7 @@ impl Component for App {
                 ctx.link().callback(|_| SharedMessage::NotifyRosterUpdated).emit(());
                 true
             }
+            
 
             _ => false // Passing to the child objects to be handled.
         }    

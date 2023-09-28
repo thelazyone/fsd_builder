@@ -57,14 +57,10 @@
     top: 120px; /* Adjust as needed */
     left: 50%;
     transform: translateX(-50%); /* This will horizontally center the tooltip */
-    background-color: #333;
     color: white;
     padding: 5px;
     border-radius: 5px;
     white-space: nowrap;
-    font-size: 16px;
-    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
-    font-weight: bold;
 }
 
 .total-points {
@@ -73,11 +69,20 @@
     background-color: transparent;  /* Light gray background for visibility */
     border-bottom: 1px solid #ccc;  /* A border at the bottom */
     text-align: center;
-    font-size: 16px;
+    font-size: 24px;
     font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
     font-weight: bold;
 }
 
 .over-limit {
     color: darkred;
+}
+
+.tooltip {
+    position: absolute;
+    background-color: white;
+    border: 1px solid black;
+    padding: 5px;
+    z-index: 1000;
+    pointer-events: none; /* Makes it so the tooltip doesn't interfere with other mouse events */
 }

@@ -39,7 +39,7 @@ impl Component for TopMenu {
                 <div class="menu">
                     <button onclick={ctx.props().on_clear_roster.reform(|_| SharedMessage::ClearRoster)}>{"Clear Roster"}</button>
                     <button onclick={ctx.props().on_load_roster.reform(|_| SharedMessage::LoadRoster)}>{"Load Roster"}</button>
-                    <button onclick={ctx.props().on_action.reform(|_| SharedMessage::SaveRoster)}>{"Save Roster"}</button>
+                    <button onclick={ctx.props().on_save_roster.reform(|_| SharedMessage::SaveRoster)}>{"Save Roster"}</button>
                 </div>
             </div>
         }
