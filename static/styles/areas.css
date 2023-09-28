@@ -14,8 +14,55 @@
     text-align: right;
 }
 
-.main-canvas {
-    background-color: #fff;
+.parent-container { 
+    display: flex;
+    flex-direction: column; /* or row, depending on your layout */
+    height: 100vh; /* occupy full viewport height */
 }
 
-  
+.central-area {
+    flex-grow: 1; /* this will make it occupy all available space */
+    overflow: auto; /* in case the content inside central-area is bigger than the container itself */
+}
+
+
+.roster-element {
+    position: absolute;
+    left: 10px;
+    width: 100px;
+    height: 20px;
+    background-color: blue;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+.hoverable-area {
+    display: inline-block;
+    width: 200px; /* Adjust as needed */
+    height: 200px; /* Adjust as needed */
+    border: 8px solid black;
+    border-radius: 8px;
+    margin: 10px; /* Half of the desired spacing since it applies to both sides */
+    position: relative;
+    text-align: center;
+    font-size: 16px;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    font-weight: bold; 
+}
+
+.hoverable-area:hover::before {
+    content: attr(data-tooltip); /* This will display the tooltip content */
+    position: absolute;
+    top: 120px; /* Adjust as needed */
+    left: 50%;
+    transform: translateX(-50%); /* This will horizontally center the tooltip */
+    background-color: #333;
+    color: white;
+    padding: 5px;
+    border-radius: 5px;
+    white-space: nowrap;
+    font-size: 16px;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    font-weight: bold;
+}

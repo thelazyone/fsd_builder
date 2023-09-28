@@ -1,17 +1,15 @@
 .top-menu {
     display: grid;
-    grid-template-rows: auto 1fr;
-    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto 0.3fr;
     vertical-align: middle;
 }
 
 .title {
-    grid-column: 1;
-    text-align: right;
+    text-align: center;
     background-color: transparent;
     border: none;
     color: black;
-    padding: 22px 32px;
+    padding: 12px 0px;
     vertical-align: middle;
     text-decoration: none;
     font-size: 1.6rem;
@@ -21,15 +19,13 @@
 }
 
 .menu {
-    grid-column: 2;
-    text-align: left;
+    text-align: center;
     background-color: transparent;
     border: none;
     color: black;
-    padding: 0px 32px;
+    padding: 0px 0px;
     vertical-align: middle;
     text-decoration: none;
-    font-size: 1.4rem;
     font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
     font-weight: bold; /* Make the font bold */
     text-transform: uppercase;
@@ -39,7 +35,7 @@
     background-color: transparent;
     border: none;
     color: black;
-    padding: 32px 32px;
+    padding: 8px 48px;
     text-align: center;
     vertical-align: middle;
     text-decoration: none;

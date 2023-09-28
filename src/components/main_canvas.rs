@@ -1,6 +1,4 @@
 use yew::prelude::*;
-use wasm_bindgen::JsCast;
-use web_sys::HtmlCanvasElement;
 
 // Pointer to roster, which is only one for the app.
 use std::rc::Rc;
@@ -37,23 +35,27 @@ impl Component for MainCanvas {
 
     fn update(&mut self, _: &Context<Self>, msg: Self::Message) -> bool {
         match msg {
-
             SharedMessage::NotifyRosterUpdated => {
                 console::log_1(&"Roster updated notification received in MAIN CANVAS".into());
                 true
             }
-
             _ => panic!("Wrong message received!")
         }
     }
 
     fn view(&self, _: &Context<Self>) -> Html {
+        let roster = self.props.roster.borrow();
         html! {
             <div class="central-area">
-                // TODO the canvas should just fill the space!
-                // Possibly even not being a canvas at all, just absolute positioning 
-                // Of HTML buttons.
-                <canvas id="game-canvas" width="800" height="600"></canvas>
+                {
+                    for roster.elements.iter().enumerate().map(|(i, elem)| {
+                        html!{
+                            <div class="hoverable-area" data-tooltip={self.get_tooltip_content(elem)}>
+                                { self.get_element_name(elem) }
+                            </div>
+                        }
+                    })
+                }
             </div>
         }
     }
@@ -69,56 +71,25 @@ impl Component for MainCanvas {
         self.props = new_props.clone();
         true
     }
-    
-    fn rendered(&mut self, _ctx: &Context<Self>, first_render: bool) {
-        console::log_1(&"CALLED RENDER!".into());
-        
-        let canvas: HtmlCanvasElement = web_sys::window()
-            .unwrap()
-            .document()
-            .unwrap()
-            .get_element_by_id("game-canvas")
-            .unwrap()
-            .dyn_into::<HtmlCanvasElement>()
-            .unwrap();
-        let context = canvas
-            .get_context("2d")
-            .unwrap()
-            .unwrap()
-            .dyn_into::<web_sys::CanvasRenderingContext2d>()
-            .unwrap();
-
-        let roster = self.props.roster.borrow();
-        console::log_1(&format!("Rendering canvas with {:?} elements", roster.elements.len()).into());
-
-        // Clear the canvas before redrawing
-        context.clear_rect(0.0, 0.0, canvas.width() as f64, canvas.height() as f64);
-
-        for (i, elem) in roster.elements.iter().enumerate() {
-            // Set the fill style for each element
-            context.set_fill_style(&"blue".into());
-
-            // Draw a rectangle for each element
-            context.fill_rect(10.0, 10.0 + (i as f64 * 30.0), 100.0, 20.0);
-
-            // Set the fill style for the text
-            context.set_fill_style(&"white".into());
-
-            // Draw the text for each element
-            context.fill_text(&format!("{:?}", self.get_element_name(elem)), 20.0, 30.0 + (i as f64 * 30.0)).unwrap();
-        }
-    }
-
 }
 
-impl MainCanvas{
+impl MainCanvas {
     // Simple rendering of the various elements of the roster.
     fn get_element_name(&self, elem: &RosterElement) -> String {
         match elem {
             RosterElement::ElemCharacter(character) => format!("Character: {:?}", character.name),
             RosterElement::ElemUnit(unit) => format!("Unit: {:?}", unit.name),
             RosterElement::ElemSupport(support) => format!("Support: {:?}", support.name),
-            RosterElement::ElemOther((name, value))=> format!("Other: {} - {}", name, value),
+            RosterElement::ElemOther((name, value)) => format!("{} - {}", name, value),
+        }
+    }
+
+    fn get_tooltip_content(&self, elem: &RosterElement) -> String {
+        match elem {
+            RosterElement::ElemCharacter(character) => format!("Character Details: {:?}", character.name),
+            RosterElement::ElemUnit(unit) => format!("Unit Details: {:?}", unit.name),
+            RosterElement::ElemSupport(support) => format!("Support Details: {:?}", support.name),
+            RosterElement::ElemOther((name, value)) => format!("Other Details: {} - {}", name, value),
         }
     }
 }
