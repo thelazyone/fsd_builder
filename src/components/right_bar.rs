@@ -1,61 +1,41 @@
 use yew::prelude::*;
 
-// For browser debugging
-use web_sys::console;
-
 #[derive(Properties, Clone, PartialEq)]
 pub struct Props {
     pub model: Vec<(String, u32)>,
+    pub on_add_to_roster: Callback<(String, u32)>,
 }
 
-pub struct RightBar{
-    props: Props,
-}
-
-pub enum Msg {
-    ShowUnits,
-    ShowCharacters,
-    ShowSupports,
-}
+pub struct RightBar {}
 
 impl Component for RightBar {
-    type Message = Msg;
+    type Message = ();
     type Properties = Props;
 
-    fn create(ctx: &Context<Self>) -> Self {
-        RightBar {
-            props: ctx.props().clone(),
-        }
+    fn create(_: &Context<Self>) -> Self {
+        RightBar {}
     }
 
     fn update(&mut self, _: &Context<Self>, _: Self::Message) -> bool {
-        true
+        false
     }
 
-    fn changed(&mut self, _: &Context<Self>, new_props: &Self::Properties) -> bool {
-        // Manually handle the roster_updated bool to determine if the component should re-render
-        if new_props.model!= self.props.model {
-            self.props.model = new_props.model.clone();
-            console::log_1(&"Right Bar Props changed!".into());
-            true
-        } else {
-            console::log_1(&"Right Bar Props not changed!".into());
-            false
-        }
-    }
-
-    fn view(&self, _: &Context<Self>) -> Html {
-        console::log_1(&"Right Bar Test".into());
-        for _ in &self.props.model {
-            console::log_1(&"Adding Button".into());
-        }
+    fn view(&self, ctx: &Context<Self>) -> Html {
         html! {
             <div class="right-bar">
-                { for self.props.model.iter().map(|elem|  html!{<li>{ format!("{:?}<br>{:?}", elem.0, elem.1) }</li>} ) }
-
-                <div class="details-section">
-                    // This section will be used to display details in the future
-                </div>
+                { 
+                    for ctx.props().model.iter().map(|(name, points)| {
+                        let name = name.clone();
+                        let points = *points;
+                        let callback = ctx.props().on_add_to_roster.clone();
+                        let button_string = format!("{:?} - {:?}", name, points);
+                        html!{
+                            <button onclick={Callback::from(move |_| callback.emit((name.clone(), points)))}>
+                                { button_string}
+                            </button>
+                        }
+                    })
+                }
             </div>
         }
     }

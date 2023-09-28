@@ -9,6 +9,7 @@ pub enum SharedMessage {
     ShowCharacters,
     ShowSupports,
 
+    AddToRoster(String, u32),
     NotifyRosterUpdated,
 
     FileSelected,

@@ -20,6 +20,8 @@ use web_sys::console;
 // A common definition for all messages:
 use crate::shared_messages::SharedMessage;
 
+use crate::models::roster::RosterElement;
+
 #[wasm_bindgen]
 extern "C" {
     fn downloadFile(content: &str, filename: &str);
@@ -78,10 +80,11 @@ impl Component for App {
                 }
                 true
             }
+
             SharedMessage::SaveRoster => {
                 match self.roster.borrow().to_json() {
                     Ok(json_string) => {
-                        
+
                         // Trigger a file download with the JSON string
                         downloadFile(&json_string, "roster.json");
                     },
@@ -110,6 +113,28 @@ impl Component for App {
                     }
                 }
 
+                true
+            }
+
+            SharedMessage::ShowUnits => {
+                self.right_bar_model = armylist::ArmyList::new_tech().get_units().
+                    into_iter().map(|elem| {elem}).collect();
+                true
+            }
+            SharedMessage::ShowCharacters => {
+                self.right_bar_model = armylist::ArmyList::new_tech().get_characters().
+                    into_iter().map(|elem| {elem}).collect();
+                true
+            }
+            SharedMessage::ShowSupports => {
+                self.right_bar_model = armylist::ArmyList::new_tech().get_supports().
+                    into_iter().map(|elem| {elem}).collect();
+                true
+            }
+    
+            SharedMessage::AddToRoster(name, points) => {
+                self.roster.borrow_mut().add_element(RosterElement::ElemOther((name, points)).into()); // Implement the add_element method
+                ctx.link().callback(|_| SharedMessage::NotifyRosterUpdated).emit(());
                 true
             }
 
@@ -143,7 +168,8 @@ impl Component for App {
                 <div class="right-bar">
                     <RightBar 
                         model={self.right_bar_model.clone()}
-                    />
+                        on_add_to_roster={ctx.link().callback(|(name, points)| SharedMessage::AddToRoster(name, points))}
+                    />                    
                 </div>
 
             // File Selection Popup
