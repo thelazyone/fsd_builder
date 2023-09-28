@@ -5,6 +5,7 @@ use crate::models::roster::Roster;
 
 // Importing the quasi-static Armmylist
 use crate::models::armylist;
+use crate::models::armylist::Faction;
 
 // Handling the roster as a pointer
 use std::rc::Rc;
@@ -134,18 +135,18 @@ impl Component for App {
                 true
             }
 
-            SharedMessage::ShowUnits => {
-                self.right_bar_model = armylist::ArmyList::new_tech().get_units().
+            SharedMessage::ShowUnits(faction) => {
+                self.right_bar_model = armylist::ArmyList::new(faction).get_units().
                     into_iter().map(|elem| {elem}).collect();
                 true
             }
-            SharedMessage::ShowCharacters => {
-                self.right_bar_model = armylist::ArmyList::new_tech().get_characters().
+            SharedMessage::ShowCharacters(faction) => {
+                self.right_bar_model = armylist::ArmyList::new(faction).get_characters().
                     into_iter().map(|elem| {elem}).collect();
                 true
             }
-            SharedMessage::ShowSupports => {
-                self.right_bar_model = armylist::ArmyList::new_tech().get_supports().
+            SharedMessage::ShowSupports(faction) => {
+                self.right_bar_model = armylist::ArmyList::new(faction).get_supports().
                     into_iter().map(|elem| {elem}).collect();
                 true
             }
@@ -166,28 +167,28 @@ impl Component for App {
             <div class="app">
                 <div class="top-menu">
                     <TopMenu 
-                        on_load_roster= {ctx.link().callback(|_| SharedMessage::LoadRoster)} 
-                        on_clear_roster= {ctx.link().callback(|_| SharedMessage::ClearRoster)} 
-                        on_save_roster= {ctx.link().callback(|_| SharedMessage::SaveRoster)} 
+                        on_load_roster = {ctx.link().callback(|_| SharedMessage::LoadRoster)} 
+                        on_clear_roster = {ctx.link().callback(|_| SharedMessage::ClearRoster)} 
+                        on_save_roster = {ctx.link().callback(|_| SharedMessage::SaveRoster)} 
                     />
                 </div>
                 <div class="left-bar">
                     <LeftBar
-                        on_show_units= {ctx.link().callback(|_| SharedMessage::ShowUnits)} 
-                        on_show_characters= {ctx.link().callback(|_| SharedMessage::ShowCharacters)} 
-                        on_show_supports= {ctx.link().callback(|_| SharedMessage::ShowSupports)} 
+                        on_show_units = {ctx.link().callback(|msg| msg)} 
+                        on_show_characters = {ctx.link().callback(|msg| msg)} 
+                        on_show_supports = {ctx.link().callback(|msg| msg)} 
                     />
                 </div>
                 <div class="main-canvas">
                     <MainCanvas 
-                        roster={self.roster.clone()} 
-                        on_roster_updated={ctx.link().callback(|_| SharedMessage::NotifyRosterUpdated)}
+                        roster = {self.roster.clone()} 
+                        on_roster_updated = {ctx.link().callback(|_| SharedMessage::NotifyRosterUpdated)}
                     />
                 </div>
                 <div class="right-bar">
                     <RightBar 
-                        model={self.right_bar_model.clone()}
-                        on_add_to_roster={ctx.link().callback(|(name, points)| SharedMessage::AddToRoster(name, points))}
+                        model = {self.right_bar_model.clone()}
+                        on_add_to_roster = {ctx.link().callback(|(name, points)| SharedMessage::AddToRoster(name, points))}
                     />                    
                 </div>
 

@@ -1,3 +1,5 @@
+use crate::models::armylist::Faction;
+
 pub enum SharedMessage {
     NoOp, // Dummy message for no-operation
     
@@ -5,9 +7,10 @@ pub enum SharedMessage {
     LoadRoster,
     SaveRoster,
 
-    ShowUnits,
-    ShowCharacters,
-    ShowSupports,
+    ToggleMenu(Faction),
+    ShowUnits(Faction),
+    ShowCharacters(Faction),
+    ShowSupports(Faction),
 
     AddToRoster(String, u32),
     NotifyRosterUpdated,

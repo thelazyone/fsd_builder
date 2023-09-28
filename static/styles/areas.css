@@ -25,7 +25,6 @@
     left: 10px;
     width: 100px;
     height: 20px;
-    background-color: blue;
     color: white;
     border: none;
     cursor: pointer;
@@ -48,7 +47,7 @@
     font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
     font-weight: bold; 
     text-transform: uppercase;
-    background-color: transparent; /* Light grey background */
+    background-color: transparent; 
     box-shadow: 0px 0px 32px rgba(0, 0, 0, 0.1); /* Drop shadow */
     transition: background-color 0.3s ease; /* Transition for smooth animation */
 }
@@ -107,4 +106,32 @@
     pointer-events: none; /* Makes it so the tooltip doesn't interfere with other mouse events */
     font-size: 12px;
     font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+}
+
+
+.left-menu {
+    overflow: visible;
+    transition: max-height 0.5s ease;
+    max-height: 500px; /* Adjust based on the height of the menu button */
+}
+
+.left-menu.expanded {
+    max-height: 600px; /* Adjust based on the maximum height you expect the menu to be */
+}
+
+.left-menu-content {
+    overflow: hidden;
+    transition: opacity 0.5s ease;
+    opacity: 0;
+    height: 0;
+}
+
+.left-menu.expanded .left-menu-content {
+    opacity: 1;
+    height: auto;
+}
+
+.left-bar .left-menu > button {
+    font-size: 20px; /* Adjust this value to your preference */
+    text-transform: uppercase;
 }

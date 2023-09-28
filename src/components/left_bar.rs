@@ -1,7 +1,11 @@
 use yew::prelude::*;
 use crate::shared_messages::SharedMessage;
+use crate::models::armylist::Faction;
+use web_sys::console;
 
-pub struct LeftBar {}
+pub struct LeftBar {
+    expanded_menu: Option<Faction>,
+}
 
 #[derive(Properties, Clone, PartialEq)]
 pub struct Props {
@@ -15,22 +19,54 @@ impl Component for LeftBar {
     type Properties = Props;
 
     fn create(_: &Context<Self>) -> Self {
-        LeftBar {}
+        LeftBar {expanded_menu: None,}
     }
 
-    fn update(&mut self, _: &Context<Self>, _: Self::Message) -> bool {
-        false
+    fn update(&mut self, _: &Context<Self>, msg: Self::Message) -> bool {
+        match msg {
+            SharedMessage::ToggleMenu(faction) => {
+                if self.expanded_menu.as_ref() == Some(&faction) {
+                    self.expanded_menu = None;
+                } else {
+                    self.expanded_menu = Some(faction);
+                }
+                true
+            }
+
+            _ => false
+        }
     }
 
     fn view(&self, ctx: &Context<Self>) -> Html {
         html! {
             <div class="left-bar">
-                <button onclick={ctx.props().on_show_units.reform(|_| SharedMessage::ShowUnits)}>{"Add Unit"}</button>
-                <button onclick={ctx.props().on_show_characters.reform(|_| SharedMessage::ShowCharacters)}>{"Add Character"}</button>
-                <button onclick={ctx.props().on_show_supports.reform(|_| SharedMessage::ShowSupports)}>{"Add Support"}</button>
-                <div class="details-section">
-                    // This section will be used to display details in the future
-                    // TODO
+                { self.render_menu(ctx, Faction::Tech) }
+                { self.render_menu(ctx, Faction::Enlisted) }
+                { self.render_menu(ctx, Faction::Conglomerate) }
+                { self.render_menu(ctx, Faction::Union) }
+            </div>
+        }
+    }
+}
+
+impl LeftBar {
+    fn render_menu(&self, ctx: &Context<Self>, faction: Faction) -> Html {
+        let is_expanded = self.expanded_menu.as_ref() == Some(&faction);
+        let button_text = format!("{:?}", faction);
+        let out_faction = faction.clone();
+        console::log_1(&format!("faction is: {:?}", faction).into());
+        console::log_1(&format!("Is Expanded: {:?}", is_expanded).into());
+
+
+        html! {
+            <div class={if is_expanded { "left-menu expanded" } else { "left-menu" }}>
+                <button onclick={ctx.link().callback(move |_| SharedMessage::ToggleMenu(faction.clone()))}>
+                    { button_text }
+                </button>
+                <div class="left-menu-content">
+                    <button onclick={ctx.props().on_show_units.reform(move|_| SharedMessage::ShowUnits(out_faction))}>{"Add Units"}</button>
+                    <button onclick={ctx.props().on_show_characters.reform(move|_| SharedMessage::ShowCharacters(out_faction))}>{"Add Characters"}</button>
+                    <button onclick={ctx.props().on_show_supports.reform(move|_| SharedMessage::ShowSupports(out_faction))}>{"Add Supports"}</button>
                 </div>
             </div>
         }
