@@ -1,6 +1,7 @@
 # fsd_builder
-Army builder for Full Spectrum Dominance
-you can find more about the game on https://fsd-wargame.com/.
+Army builder for Full Spectrum Dominance.
+
+You can find more about the game on https://fsd-wargame.com/.
 
 ## Live Demo
 Here's a WIP version deployed as of 28/9/2023: https://test.thelazyforger.com/fsd_roster/
@@ -11,7 +12,8 @@ To get started, you need the following:
 * Trunk: install with `cargo install --locked trunk`. This will take _a while_.
 
 ## Serving
-Trunk should be doing all the heavy lifting here. The index.html is the entry point (and for silly reasons has to be kept in the root directory), and a few directions are provided in the trunk.toml file. Other than that, calling `trunk build` and `trunk serve` (or, if you're feeling fancy, `trunk serve --open`) should set up the website on localhost:8080.
+Trunk should be doing all the heavy lifting here. 
+The index.html is the entry point (and for silly reasons has to be kept in the root directory), and a few directions are provided in the trunk.toml file. Other than that, calling `trunk build` and `trunk serve` (or, if you're feeling fancy, `trunk serve --open`) should set up the website on localhost:8080.
 The intermediate files will be copied in a dist folder (which is in .gitignore) before serving.
 
 ## Deployment
