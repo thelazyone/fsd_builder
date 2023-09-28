@@ -2,7 +2,8 @@
 Army builder for Full Spectrum Dominance
 you can find more about the game on https://fsd-wargame.com/.
 
-
+## Live Demo
+Here's a WIP version deployed as of 28/9/2023: https://test.thelazyforger.com/fsd_roster/
 
 ## Installation
 To get started, you need the following:
@@ -14,7 +15,7 @@ Trunk should be doing all the heavy lifting here. The index.html is the entry po
 The intermediate files will be copied in a dist folder (which is in .gitignore) before serving.
 
 ## Deployment
-Copying on your website the content of /dist after calling `trunk serve --release` should be enough. Currently however the generated .html lacks some relative paths. Check [#1] 
+Copying on your website the content of /dist after calling `trunk serve --release` should be enough. Currently however the generated .html lacks some relative paths. Check [#1]([/../../issues/3](https://github.com/thelazyone/fsd_builder/issues/1)) for that. Hopefully it will be fixed soon.
 
 ## Features 
 This army builder is a work in progress, and progressively multiple features will be included
