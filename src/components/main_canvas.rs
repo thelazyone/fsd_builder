@@ -45,10 +45,16 @@ impl Component for MainCanvas {
 
     fn view(&self, _: &Context<Self>) -> Html {
         let roster = self.props.roster.borrow();
+        let total_points: u32 = roster.elements.iter()
+            .map(|elem| self.get_element_points(elem)).sum();
+
         html! {
             <div class="central-area">
+                <div class={if total_points > 60 { "total-points over-limit" } else { "total-points" }}>
+                    { format!("Total Points: {}", total_points) }
+                </div>
                 {
-                    for roster.elements.iter().enumerate().map(|(i, elem)| {
+                    for roster.elements.iter().enumerate().map(|(_, elem)| {
                         html!{
                             <div class="hoverable-area" data-tooltip={self.get_tooltip_content(elem)}>
                                 { self.get_element_name(elem) }
@@ -90,6 +96,15 @@ impl MainCanvas {
             RosterElement::ElemUnit(unit) => format!("Unit Details: {:?}", unit.name),
             RosterElement::ElemSupport(support) => format!("Support Details: {:?}", support.name),
             RosterElement::ElemOther((name, value)) => format!("Other Details: {} - {}", name, value),
+        }
+    }
+
+    fn get_element_points(&self, elem: &RosterElement) -> u32 {
+        match elem {
+            RosterElement::ElemCharacter(character) => character.points,
+            RosterElement::ElemUnit(unit) => unit.points,
+            RosterElement::ElemSupport(support) => support.points,
+            RosterElement::ElemOther((_, value)) => *value,
         }
     }
 }
