@@ -1,7 +1,3 @@
 [build]
 crate = "fsd_builder"
 manifest = "Cargo.toml"
-
-[[copy]]
-source = "src/js/download_file.js"
-destination = "static/js/"
