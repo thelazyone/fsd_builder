@@ -1,6 +1,7 @@
 use super::element::Element;
+use serde::{Serialize, Deserialize};
 
-#[derive(Clone, PartialEq)]
+#[derive(Clone, PartialEq, Serialize, Deserialize)]
 pub struct Unit {
     pub name : String,
     pub points : u32,

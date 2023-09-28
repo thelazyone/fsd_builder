@@ -1,4 +1,5 @@
 use yew::prelude::*;
+use wasm_bindgen::prelude::*;
 use crate::components::{top_menu::TopMenu, left_bar::LeftBar, right_bar::RightBar, main_canvas::MainCanvas};
 use crate::models::roster::Roster;
 
@@ -18,6 +19,11 @@ use web_sys::console;
 
 // A common definition for all messages:
 use crate::shared_messages::SharedMessage;
+
+#[wasm_bindgen]
+extern "C" {
+    fn downloadFile(content: &str, filename: &str);
+}
 
 pub struct App{
 
@@ -63,13 +69,6 @@ impl Component for App {
     fn update(&mut self, ctx: &Context<Self>, msg : Self::Message) -> bool {
         match msg {
 
-            // Roster Handling
-            // SharedMessage::LoadRoster => {
-            //     console::log_1(&"Called LOAD for the roster".into());
-            //     self.roster.borrow_mut().load(); // Load the roster when the message is received
-            //     false
-            // }
-            // Roster Handling
             SharedMessage::LoadRoster => {
                 if let Some(input) = self.file_input_ref.cast::<web_sys::HtmlInputElement>() {
                     
@@ -80,16 +79,38 @@ impl Component for App {
                 true
             }
             SharedMessage::SaveRoster => {
-
-                // TODO
-
-                false 
+                match self.roster.borrow().to_json() {
+                    Ok(json_string) => {
+                        
+                        // Trigger a file download with the JSON string
+                        downloadFile(&json_string, "roster.json");
+                    },
+                    Err(e) => {
+                        console::log_1(&format!("Error serializing roster: {:?}", e).into());
+                    }
+                }
+                false
             }
+
             SharedMessage::ClearRoster => {
                 console::log_1(&"Called CLEAR for the roster".into());
                 self.roster.borrow_mut().clear();
                 ctx.link().callback(|_| SharedMessage::NotifyRosterUpdated).emit(());
                 true            
+            }
+
+            SharedMessage::FileContentReceived(text) => {
+                match Roster::from_json(&text) {
+                    Ok(roster) => {
+                        *self.roster.borrow_mut() = roster; // todo can't 
+                    }
+
+                    Err(e) => {
+                        // Do something TODO
+                    }
+                }
+
+                true
             }
 
             _ => false // Passing to the child objects to be handled.

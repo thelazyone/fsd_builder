@@ -2,7 +2,15 @@ use crate::models::character::Character;
 use crate::models::unit::Unit;
 use crate::models::support::Support;
 
-#[derive(Clone, PartialEq)]
+// For serialization
+use serde::{Serialize, Deserialize};
+use serde_json;
+
+// For custom serde errors:
+use serde::de;
+
+
+#[derive(Clone, PartialEq, Serialize, Deserialize)]
 pub enum RosterElement {
     ElemCharacter(Character),
     ElemUnit(Unit),
@@ -29,32 +37,48 @@ impl From<Support> for RosterElement {
 }
 
 
-#[derive(Clone, PartialEq)]
+#[derive(Clone, PartialEq, Serialize, Deserialize)]
 pub struct Roster {
+    pub version : u32,
     pub elements : Vec<RosterElement>,
 }
 
 impl Roster {
     pub fn new() -> Roster {
-        Roster {elements: Vec::<RosterElement>::new()}
-    }
-
-    pub fn load(&mut self) {
-        self.clear();
-        self.add_element(Character{name: "char1".to_string(), points:2}.into());
-        self.add_element(Unit{name: "unit1".to_string(), points:3}.into());
-        self.add_element(Unit{name: "unit2".to_string(), points:4}.into());
-        self.add_element(Support{name: "support1".to_string(), points:5}.into());
+        Roster {elements: Vec::<RosterElement>::new(), version: 1}
     }
 
     pub fn clear(&mut self) {
         self.elements.clear();
     }
 
-    fn add_element(&mut self, element: RosterElement) {
+    pub fn add_element(&mut self, element: RosterElement) {
         self.elements.push(element);
     }
 
+    // JSON serialization (static methods):
+    pub fn from_json(json_str: &str) -> Result<Self, serde_json::Error> {
+        
+        let roster: Roster = serde_json::from_str(json_str)?;
+
+        // let mut roster: Roster = serde_json::from_str(json_str)?;
+        // roster.add_element(Character{name: "char1".to_string(), points:2}.into());
+        // roster.add_element(Unit{name: "unit1".to_string(), points:3}.into());
+        // roster.add_element(Unit{name: "unit2".to_string(), points:4}.into());
+        // roster.add_element(Support{name: "support1".to_string(), points:5}.into());
+
+        if roster.version < 1 { // Assuming 1 is the current version
+            // Handle older versions differently
+            // For now, just return an error
+            return Err(de::Error::custom("Roster version is too old"));
+        }
+        Ok(roster)
+    }
+
+    pub fn to_json(&self) -> Result<String, serde_json::Error> {
+        serde_json::to_string(self)
+    }
+    
     // TODO implement
     // fn check_validity (&self) -> Result(None, ) {
 
