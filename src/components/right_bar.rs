@@ -28,10 +28,10 @@ impl Component for RightBar {
                         let name = name.clone();
                         let points = *points;
                         let callback = ctx.props().on_add_to_roster.clone();
-                        let button_string = format!("{:?} - {:?}", name, points);
+                        let button_string = name.clone().to_uppercase();
                         html!{
                             <button onclick={Callback::from(move |_| callback.emit((name.clone(), points)))}>
-                                { button_string}
+                                { button_string}<br />{ format!("{:?} Points", points) }
                             </button>
                         }
                     })

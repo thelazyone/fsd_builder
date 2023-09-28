@@ -1,20 +1,24 @@
-
-
+.left-bar, .right-bar {
+    padding: 10px;
+    box-sizing: border-box;
+    overflow: visible;
+    width: auto;
+}
 
 .left-bar button, .right-bar button {
+    display: block; /* This ensures each button is on a new line */
     background-color: transparent;
     border: none;
     color: black;
     padding: 15px 12px;
-    text-align: center;
     text-decoration: none;
-    display: block;
     font-size: 16px;
     font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
     margin: 4px 2px;
     cursor: pointer;
-    font-weight: bold; /* Make the font bold */
-  }
+    font-weight: bold;
+    width: 100%;
+}
 
 .left-bar button:hover, .right-bar button:hover {
     background-color: rgba(220, 220, 220, 0.5);
@@ -24,4 +28,24 @@
 .button:hover {
     background-color: rgba(220, 220, 220, 0.5);
     transition: 0.7s;
+}
+
+.left-bar button {
+    text-align: left;
+}
+
+.right-bar button {
+    text-align: right;
+}
+
+.left-bar {
+    background-color: transparent;
+    text-align: left; /* This ensures content in the left bar is left-aligned */
+    align-items: left;
+}
+
+.right-bar {
+    background-color: transparent;
+    text-align: right; /* This ensures content in the right bar is right-aligned */
+    align-items: right;
 }

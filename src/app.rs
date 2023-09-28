@@ -4,7 +4,7 @@ use crate::components::{top_menu::TopMenu, left_bar::LeftBar, right_bar::RightBa
 use crate::models::roster::Roster;
 
 // Importing the quasi-static Armmylist
-use crate::models::armylist::{ArmyList, self};
+use crate::models::armylist;
 
 // Handling the roster as a pointer
 use std::rc::Rc;

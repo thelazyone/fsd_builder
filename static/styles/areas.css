@@ -1,17 +1,7 @@
-.left-bar, .right-bar, .main-canvas {
+.main-canvas {
     padding: 10px;
     box-sizing: border-box;
     overflow: visible;
-}
-
-.left-bar {
-    background-color: transparent;
-    text-align: left;
-}
-
-.right-bar {
-    background-color: transparent;
-    text-align: right;
 }
 
 .parent-container { 
@@ -25,7 +15,6 @@
     overflow: visible; /* in case the content inside central-area is bigger than the container itself */
 }
 
-
 .roster-element {
     position: absolute;
     left: 10px;
@@ -37,11 +26,14 @@
     cursor: pointer;
 }
 
-
-
 .hoverable-area {
-    display: inline-block;
+    display: inline-flex;
+    justify-content: center; /* Horizontally center the content */
+    align-items: center;     /* Vertically center the content */
+    flex-direction: column;  /* Stack child elements vertically */    
     width: 200px;
+    vertical-align: middle;
+
     height: 200px;
     border: 4px solid rgba(0, 0, 0, 0.3);;
     border-radius: 16px;
