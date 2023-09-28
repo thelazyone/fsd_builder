@@ -1,7 +1,7 @@
 .left-bar, .right-bar, .main-canvas {
     padding: 10px;
     box-sizing: border-box;
-    overflow-y: auto;
+    overflow: visible;
 }
 
 .left-bar {
@@ -22,7 +22,7 @@
 
 .central-area {
     flex-grow: 1; /* this will make it occupy all available space */
-    overflow: auto; /* in case the content inside central-area is bigger than the container itself */
+    overflow: visible; /* in case the content inside central-area is bigger than the container itself */
 }
 
 
@@ -37,18 +37,32 @@
     cursor: pointer;
 }
 
+
+
 .hoverable-area {
     display: inline-block;
-    width: 200px; /* Adjust as needed */
-    height: 200px; /* Adjust as needed */
-    border: 8px solid black;
-    border-radius: 8px;
-    margin: 10px; /* Half of the desired spacing since it applies to both sides */
+    width: 200px;
+    height: 200px;
+    border: 4px solid rgba(0, 0, 0, 0.3);;
+    border-radius: 16px;
+    margin: 10px;
     position: relative;
     text-align: center;
     font-size: 16px;
     font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
     font-weight: bold; 
+    text-transform: uppercase;
+    background-color: transparent; /* Light grey background */
+    box-shadow: 0px 0px 32px rgba(0, 0, 0, 0.1); /* Drop shadow */
+    transition: background-color 0.3s ease; /* Transition for smooth animation */
+}
+
+.content-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* This will vertically center the content */
+    align-items: center; /* This will horizontally center the content */
+    height: 100%; /* Take up the full height of the parent */
 }
 
 .hoverable-area:hover::before {
@@ -63,6 +77,10 @@
     white-space: nowrap;
 }
 
+.hoverable-area:hover {
+    background-color: #eee; /* Darker grey when hovered */
+}
+
 .total-points {
     font-weight: bold;  /* Thick style */
     padding: 20px;
@@ -72,6 +90,11 @@
     font-size: 24px;
     font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
     font-weight: bold;
+}
+
+.points-label {
+    font-size: 24px; /* Adjust as needed */
+    margin-top: 10px; /* Adjust as needed */
 }
 
 .over-limit {

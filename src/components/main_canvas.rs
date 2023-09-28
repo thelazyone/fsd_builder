@@ -100,7 +100,16 @@ impl Component for MainCanvas {
                                  onmousemove={ctx.link().callback(move |e: MouseEvent| SharedMessage::MoveTooltip(e.client_x(), e.client_y()))}
                                  onmouseout={ctx.link().callback(|_| SharedMessage::HideTooltip)}
                                  ondblclick={ctx.link().callback(move |_| SharedMessage::DeleteElement(i))}>
-                                { self.get_element_name(elem) }
+                                <div class="content-container">
+                                    { self.get_element_name(elem) }
+                                    <div class="points-label">{ if self.get_element_points(elem) > 1 {
+                                            format!("{} Points", self.get_element_points(elem))
+                                        }
+                                        else {
+                                            "1 Point".to_string()
+                                        }}
+                                    </div>
+                                </div>
                             </div>
                         }
                     })
@@ -140,7 +149,7 @@ impl MainCanvas {
             RosterElement::ElemCharacter(character) => format!("Character: {:?}", character.name),
             RosterElement::ElemUnit(unit) => format!("Unit: {:?}", unit.name),
             RosterElement::ElemSupport(support) => format!("Support: {:?}", support.name),
-            RosterElement::ElemOther((name, value)) => format!("{} - {}", name, value),
+            RosterElement::ElemOther((name, _)) => format!("{}", name),
         }
     }
 
