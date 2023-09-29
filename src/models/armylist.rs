@@ -88,6 +88,7 @@ impl ArmyList {
                 new_list.units.push(Unit {              name: "Syro Runner Rig".to_string(),                        points: 3});
                 new_list.units.push(Unit {              name: "Thales Fighter".to_string(),                         points: 7});
                 new_list.units.push(Unit {              name: "Gun Platform".to_string(),                           points: 7});
+                new_list.units.push(Unit {              name: "Gorgias Transport".to_string(),                      points: 3});
         
                 // Supports
                 new_list.supports.push(Support {        name: "Satellite Uplink".to_string(),                       points: 3});
