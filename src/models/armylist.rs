@@ -67,6 +67,8 @@ impl ArmyList {
         };
 
         match faction {
+
+            //// TECH
             Faction::Tech => {
 
                 // Characters
@@ -100,27 +102,69 @@ impl ArmyList {
                 new_list.supports.push(Support {        name: "Software Upgrade".to_string(),                       points: 1});
                 new_list.supports.push(Support {        name: "Twin Missile Strike".to_string(),                    points: 7});
             }
+
+            //// UNION
             Faction::Union => {
+                
                 // Characters
-                new_list.characters.push(Character {    name: "Placeholder Character".to_string(),                  points: 1});
+                new_list.characters.push(Character {    name: "Crew Chief".to_string(),                             points: 2});
+                new_list.characters.push(Character {    name: "Demolition Man".to_string(),                         points: 3});
+                new_list.characters.push(Character {    name: "Foreman".to_string(),                                points: 3});
+                new_list.characters.push(Character {    name: "Mechanic".to_string(),                               points: 2});
 
                 // Units
-                new_list.units.push(Unit {              name: "Placeholder Unit".to_string(),                       points: 1});
+                new_list.units.push(Unit {              name: "Steeljacks".to_string(),                             points: 2});
+                new_list.units.push(Unit {              name: "Burnerbacks".to_string(),                            points: 3});
+                new_list.units.push(Unit {              name: "Dust Riders".to_string(),                            points: 3});
+                new_list.units.push(Unit {              name: "Reclaimers".to_string(),                             points: 2});
+                new_list.units.push(Unit {              name: "Tugger".to_string(),                                 points: 2});
+                new_list.units.push(Unit {              name: "Gunwagon".to_string(),                               points: 4});
+                new_list.units.push(Unit {              name: "Ramwagon".to_string(),                               points: 4});
+                new_list.units.push(Unit {              name: "Motorbus".to_string(),                               points: 5});
+                new_list.units.push(Unit {              name: "Mobile Fortress".to_string(),                        points: 16});
 
                 // Supports
-                new_list.supports.push(Support {        name: "Placeholder Support".to_string(),                    points: 1});
+                new_list.supports.push(Support {        name: "Assault Siren".to_string(),                          points: 5});
+                new_list.supports.push(Support {        name: "Double Shift".to_string(),                           points: 2});
+                new_list.supports.push(Support {        name: "Improvised Barrier".to_string(),                     points: 2});
+                new_list.supports.push(Support {        name: "Repairing Team".to_string(),                         points: 4});
+                new_list.supports.push(Support {        name: "Tunnels and Hooks".to_string(),                      points: 1});
             }
+
+            //// CONGLOMERATE
             Faction::Conglomerate => {
+
                 // Characters
-                new_list.characters.push(Character {    name: "Placeholder Character".to_string(),                  points: 1});
+                new_list.characters.push(Character {    name: "Lead Hunter".to_string(),                            points: 2});
+                new_list.characters.push(Character {    name: "Local Lobbyst".to_string(),                          points: 5});
+                new_list.characters.push(Character {    name: "Placeholder".to_string(),                            points: 1});
 
                 // Units
-                new_list.units.push(Unit {              name: "Placeholder Unit".to_string(),                       points: 1});
+                new_list.units.push(Unit {    name: "Corporate Infantry".to_string(),                               points: 2});
+                new_list.units.push(Unit {    name: "Infantry AT Squad".to_string(),                                points: 3});
+                new_list.units.push(Unit {    name: "Saber Artillery".to_string(),                                  points: 6});
+                new_list.units.push(Unit {    name: "Scimitar Artillery".to_string(),                               points: 8});
+                new_list.units.push(Unit {    name: "Tachi Tank".to_string(),                                       points: 5});
+                new_list.units.push(Unit {    name: "Nagamaki Tank".to_string(),                                    points: 7});
+                new_list.units.push(Unit {    name: "Odachi Tank".to_string(),                                      points: 9});
+                new_list.units.push(Unit {    name: "Dagger Drop Pod".to_string(),                                  points: 3});
+                new_list.units.push(Unit {    name: "Mandau Drop Pod".to_string(),                                  points: 3});
+                new_list.units.push(Unit {    name: "Parang Drop Pod".to_string(),                                  points: 3});
+                new_list.units.push(Unit {    name: "Rapier VTOL".to_string(),                                      points: 5});
+                new_list.units.push(Unit {    name: "Dao Walker".to_string(),                                       points: 4});
+                new_list.units.push(Unit {    name: "Jian Walker".to_string(),                                      points: 3});
+                new_list.units.push(Unit {    name: "Troop Carrier".to_string(),                                    points: 3}); // TODO to remove
 
                 // Supports
-                new_list.supports.push(Support {        name: "Placeholder Support".to_string(),                    points: 1});
+                new_list.supports.push(Support {        name: "Orbital Drop Pod".to_string(),                       points: 3});
+                new_list.supports.push(Support {        name: "Malware Hack".to_string(),                           points: 2});
+                new_list.supports.push(Support {        name: "Satellite Scan".to_string(),                         points: 1});
+                new_list.supports.push(Support {        name: "Superior Directive".to_string(),                     points: 1});
             }
+
+            //// ENLISTED
             Faction::Enlisted => {
+
                 // Characters
                 new_list.characters.push(Character {    name: "General".to_string(),                                points: 5});
                 new_list.characters.push(Character {    name: "Infantry Hero".to_string(),                          points: 4});
