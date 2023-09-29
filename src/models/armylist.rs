@@ -100,12 +100,53 @@ impl ArmyList {
                 new_list.supports.push(Support {        name: "Twin Missile Strike".to_string(),                    points: 7});
             }
             Faction::Union => {
+                // Characters
+                new_list.characters.push(Character {    name: "Placeholder Character".to_string(),                  points: 1});
 
+                // Units
+                new_list.units.push(Unit {              name: "Placeholder Unit".to_string(),                       points: 1});
+
+                // Supports
+                new_list.supports.push(Support {        name: "Placeholder Support".to_string(),                    points: 1});
             }
             Faction::Conglomerate => {
+                // Characters
+                new_list.characters.push(Character {    name: "Placeholder Character".to_string(),                  points: 1});
 
+                // Units
+                new_list.units.push(Unit {              name: "Placeholder Unit".to_string(),                       points: 1});
+
+                // Supports
+                new_list.supports.push(Support {        name: "Placeholder Support".to_string(),                    points: 1});
             }
             Faction::Enlisted => {
+                // Characters
+                new_list.characters.push(Character {    name: "General".to_string(),                                points: 5});
+                new_list.characters.push(Character {    name: "Infantry Hero".to_string(),                          points: 4});
+                new_list.characters.push(Character {    name: "Infantry NCO".to_string(),                           points: 2});
+                new_list.characters.push(Character {    name: "Tank Commander".to_string(),                         points: 3});
+
+                // Units
+                new_list.units.push(Unit {              name: "Infantrymen".to_string(),                            points: 2});
+                new_list.units.push(Unit {              name: "Armored Infantry".to_string(),                       points: 4});
+                new_list.units.push(Unit {              name: "Light Mortar".to_string(),                           points: 3});
+                new_list.units.push(Unit {              name: "Scouts".to_string(),                                 points: 3});
+                new_list.units.push(Unit {              name: "Support Vehicle".to_string(),                        points: 3});
+                new_list.units.push(Unit {              name: "Troop Carrier".to_string(),                          points: 3});
+                new_list.units.push(Unit {              name: "Main Battle Tank".to_string(),                       points: 5});
+                new_list.units.push(Unit {              name: "Energy Tank".to_string(),                            points: 5});
+                new_list.units.push(Unit {              name: "Heavy Battle Tank".to_string(),                      points: 8});
+                new_list.units.push(Unit {              name: "Gunner Walker".to_string(),                          points: 3});
+                new_list.units.push(Unit {              name: "Support Walker".to_string(),                         points: 3});
+                new_list.units.push(Unit {              name: "Rocket Launcher".to_string(),                        points: 6});
+                new_list.units.push(Unit {              name: "Self-Propelled Gun".to_string(),                     points: 6});
+                
+                // Supports
+                new_list.supports.push(Support {        name: "Direct Command".to_string(),                         points: 1});
+                new_list.supports.push(Support {        name: "Guided Missile".to_string(),                         points: 2});
+                new_list.supports.push(Support {        name: "Spotter Drones".to_string(),                         points: 2});
+                new_list.supports.push(Support {        name: "Mortar Fire".to_string(),                            points: 6});
+                new_list.supports.push(Support {        name: "Strafing Run".to_string(),                           points: 6});
 
             }
             _ => panic!("Faction not ready yet!")
