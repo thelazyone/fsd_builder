@@ -137,7 +137,6 @@ impl ArmyList {
                 // Characters
                 new_list.characters.push(Character {    name: "Lead Hunter".to_string(),                            points: 2});
                 new_list.characters.push(Character {    name: "Local Lobbyst".to_string(),                          points: 5});
-                new_list.characters.push(Character {    name: "Placeholder".to_string(),                            points: 1});
 
                 // Units
                 new_list.units.push(Unit {    name: "Corporate Infantry".to_string(),                               points: 2});
