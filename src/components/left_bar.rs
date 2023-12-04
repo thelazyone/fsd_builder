@@ -54,8 +54,6 @@ impl LeftBar {
         let is_expanded = self.expanded_menu.as_ref() == Some(&faction);
         let button_text = format!("{:?}", faction);
         let out_faction = faction.clone();
-        console::log_1(&format!("faction is: {:?}", faction).into());
-        console::log_1(&format!("Is Expanded: {:?}", is_expanded).into());
 
 
         html! {

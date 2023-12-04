@@ -5,6 +5,7 @@ use serde::{Serialize, Deserialize};
 pub struct Unit {
     pub name : String,
     pub points : u32,
+    pub image : String,
 }
 
 impl Element for Unit {

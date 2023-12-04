@@ -5,7 +5,6 @@ use crate::models::roster::Roster;
 
 // Importing the quasi-static Armmylist
 use crate::models::armylist;
-use crate::models::armylist::Faction;
 
 // Handling the roster as a pointer
 use std::rc::Rc;
@@ -20,6 +19,7 @@ use web_sys::console;
 
 // A common definition for all messages:
 use crate::shared_messages::SharedMessage;
+use crate::shared_messages::GenericElementType;
 
 use crate::models::roster::RosterElement;
 
@@ -35,7 +35,7 @@ pub struct App{
     roster: Rc<RefCell<Roster>>,
 
     // Right Bar Model:
-    right_bar_model: Vec<(String, u32)>,
+    right_bar_model: Vec<GenericElementType>,
 
     // input file
     file_input_ref: NodeRef,
@@ -51,7 +51,7 @@ impl Component for App {
 
         if let Some(input) = file_input_ref.cast::<web_sys::HtmlInputElement>() {
             let link = ctx.link().clone();
-            let closure = Closure::wrap(Box::new(move |event: web_sys::Event| {
+            let closure = Closure::wrap(Box::new(move |_event: web_sys::Event| {
 
                 // Handle the selected file here
                 
@@ -65,7 +65,7 @@ impl Component for App {
         
         App {
             roster: Rc::new(RefCell::new(Roster::new().into())),
-            right_bar_model: Vec::<(String, u32)>::new(),
+            right_bar_model: Vec::<GenericElementType>::new(),
             file_input_ref: NodeRef::default(),
         }
     }
@@ -127,7 +127,7 @@ impl Component for App {
                         *self.roster.borrow_mut() = roster; // todo can't 
                     }
 
-                    Err(e) => {
+                    Err(_e) => {
                         // Do something TODO
                     }
                 }
@@ -151,8 +151,8 @@ impl Component for App {
                 true
             }
     
-            SharedMessage::AddToRoster(name, points) => {
-                self.roster.borrow_mut().add_element(RosterElement::ElemOther((name, points)).into()); // Implement the add_element method
+            SharedMessage::AddToRoster(generic_element) => {
+                self.roster.borrow_mut().add_element(RosterElement::ElemOther(generic_element).into()); // Implement the add_element method
                 ctx.link().callback(|_| SharedMessage::NotifyRosterUpdated).emit(());
                 true
             }
@@ -188,7 +188,7 @@ impl Component for App {
                 <div class="right-bar">
                     <RightBar 
                         model = {self.right_bar_model.clone()}
-                        on_add_to_roster = {ctx.link().callback(|(name, points)| SharedMessage::AddToRoster(name, points))}
+                        on_add_to_roster = {ctx.link().callback(|generic_element| SharedMessage::AddToRoster(generic_element))}
                     />                    
                 </div>
 

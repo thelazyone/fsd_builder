@@ -1,5 +1,7 @@
 use crate::models::armylist::Faction;
 
+pub type GenericElementType = (String, u32, String);
+
 pub enum SharedMessage {
     NoOp, // Dummy message for no-operation
     
@@ -12,7 +14,7 @@ pub enum SharedMessage {
     ShowCharacters(Faction),
     ShowSupports(Faction),
 
-    AddToRoster(String, u32),
+    AddToRoster(GenericElementType),
     NotifyRosterUpdated,
     DeleteElement(usize),
 

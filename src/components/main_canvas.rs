@@ -94,6 +94,7 @@ impl Component for MainCanvas {
                 </div>
                 {
                     for roster.elements.iter().enumerate().map(|(i, elem)| {
+                        let image_path = self.get_image(elem);
                         html!{
                             <div class="hoverable-area"
                                  onmouseover={ctx.link().callback(move |_| SharedMessage::ShowTooltip(i))}
@@ -102,6 +103,7 @@ impl Component for MainCanvas {
                                  ondblclick={ctx.link().callback(move |_| SharedMessage::DeleteElement(i))}>
                                 <div class="content-container">
                                     { self.get_element_name(elem) }
+                                    <img src={format!("/static/images/{}", image_path)} class="roster-image" />
                                     <div class="points-label">{ if self.get_element_points(elem) > 1 {
                                             format!("{} Points", self.get_element_points(elem))
                                         }
@@ -149,7 +151,7 @@ impl MainCanvas {
             RosterElement::ElemCharacter(character) => format!("Character: {:?}", character.name),
             RosterElement::ElemUnit(unit) => format!("Unit: {:?}", unit.name),
             RosterElement::ElemSupport(support) => format!("Support: {:?}", support.name),
-            RosterElement::ElemOther((name, _)) => format!("{}", name),
+            RosterElement::ElemOther((name, _ ,_)) => format!("{}", name),
         }
     }
 
@@ -167,7 +169,17 @@ impl MainCanvas {
             RosterElement::ElemCharacter(character) => character.points,
             RosterElement::ElemUnit(unit) => unit.points,
             RosterElement::ElemSupport(support) => support.points,
-            RosterElement::ElemOther((_, value)) => *value,
+            RosterElement::ElemOther((_, value, _)) => *value,
         }
     }
+    
+    fn get_image(&self, elem: &RosterElement) -> String {
+        match elem {
+            RosterElement::ElemCharacter(_) => "character.png".to_string(),
+            RosterElement::ElemUnit(unit) => unit.image.clone(), 
+            RosterElement::ElemSupport(_) => "support.png".to_string(),
+            RosterElement::ElemOther((_, _, image)) => image.clone(),
+        }
+    }
+
 }

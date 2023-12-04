@@ -15,7 +15,7 @@ pub enum RosterElement {
     ElemCharacter(Character),
     ElemUnit(Unit),
     ElemSupport(Support),
-    ElemOther((String, u32)),
+    ElemOther((String, u32, String)),
 }
 
 impl From<Character> for RosterElement {

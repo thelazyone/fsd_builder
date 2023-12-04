@@ -5,6 +5,8 @@ use crate::models::unit::Unit;
 use crate::models::support::Support;
 use crate::models::element::Element;
 
+use crate::shared_messages::GenericElementType;
+
 // For serialization
 use serde::{Serialize, Deserialize};
 
@@ -26,26 +28,26 @@ pub struct ArmyList {
 // Various utility functions for the armylist: 
 impl ArmyList {
 
-    pub fn get_characters (&self) -> Vec<(String, u32)> {
-        let mut out_vec = Vec::<(String, u32)>::new();
+    pub fn get_characters (&self) -> Vec<GenericElementType> {
+        let mut out_vec = Vec::<GenericElementType>::new();
         for elem in &self.characters {
-            out_vec.push((elem.get_name(), elem.get_points()));
+            out_vec.push((elem.get_name(), elem.get_points(), "a_character.png".to_string()));
         }
         out_vec
     }
 
-    pub fn get_units (&self) -> Vec<(String, u32)> {
-        let mut out_vec = Vec::<(String, u32)>::new();
+    pub fn get_units (&self) -> Vec<GenericElementType> {
+        let mut out_vec = Vec::<GenericElementType>::new();
         for elem in &self.units {
-            out_vec.push((elem.get_name(), elem.get_points()));
+            out_vec.push((elem.get_name(), elem.get_points(), elem.image.clone()));
         }
         out_vec
     }
 
-    pub fn get_supports (&self) -> Vec<(String, u32)> {
-        let mut out_vec = Vec::<(String, u32)>::new();
+    pub fn get_supports (&self) -> Vec<GenericElementType> {
+        let mut out_vec = Vec::<GenericElementType>::new();
         for elem in &self.supports {
-            out_vec.push((elem.get_name(), elem.get_points()));
+            out_vec.push((elem.get_name(), elem.get_points(), "a_character.png".to_string()));
         }
         out_vec
     }
@@ -77,20 +79,20 @@ impl ArmyList {
                 new_list.characters.push(Character {    name: "Pilot AI".to_string(),                               points: 2});
             
                 // Units
-                new_list.units.push(Unit {              name: "Battle Robots".to_string(),                          points: 3});
-                new_list.units.push(Unit {              name: "Heavy Robots".to_string(),                           points: 4});
-                new_list.units.push(Unit {              name: "Light Spider Drones".to_string(),                    points: 2});
-                new_list.units.push(Unit {              name: "Heavy Spider Drones".to_string(),                    points: 4});
-                new_list.units.push(Unit {              name: "Socrates Battle Rig (Brawler)".to_string(),          points: 8});
-                new_list.units.push(Unit {              name: "Socrates Battle Rig (Sharpshooter)".to_string(),     points: 8});
-                new_list.units.push(Unit {              name: "Socrates Battle Rig (Demolition)".to_string(),       points: 8});
-                new_list.units.push(Unit {              name: "Zeno Battle Rig".to_string(),                        points: 5});
-                new_list.units.push(Unit {              name: "Solon Battle Tank (Minigun)".to_string(),            points: 6});
-                new_list.units.push(Unit {              name: "Solon Battle Tank (Cannon)".to_string(),             points: 6});
-                new_list.units.push(Unit {              name: "Syro Runner Rig".to_string(),                        points: 3});
-                new_list.units.push(Unit {              name: "Thales Fighter".to_string(),                         points: 7});
-                new_list.units.push(Unit {              name: "Gun Platform".to_string(),                           points: 7});
-                new_list.units.push(Unit {              name: "Gorgias Transport".to_string(),                      points: 3});
+                new_list.units.push(Unit {              name: "Battle Robots".to_string(),                          points: 3,              image: "".to_string()});
+                new_list.units.push(Unit {              name: "Heavy Robots".to_string(),                           points: 4,              image: "".to_string()});
+                new_list.units.push(Unit {              name: "Light Spider Drones".to_string(),                    points: 2,              image: "".to_string()});
+                new_list.units.push(Unit {              name: "Heavy Spider Drones".to_string(),                    points: 4,              image: "".to_string()});
+                new_list.units.push(Unit {              name: "Socrates Battle Rig (Brawler)".to_string(),          points: 8,              image: "".to_string()});
+                new_list.units.push(Unit {              name: "Socrates Battle Rig (Sharpshooter)".to_string(),     points: 8,              image: "".to_string()});
+                new_list.units.push(Unit {              name: "Socrates Battle Rig (Demolition)".to_string(),       points: 8,              image: "".to_string()});
+                new_list.units.push(Unit {              name: "Zeno Battle Rig".to_string(),                        points: 5,              image: "".to_string()});
+                new_list.units.push(Unit {              name: "Solon Battle Tank (Minigun)".to_string(),            points: 6,              image: "".to_string()});
+                new_list.units.push(Unit {              name: "Solon Battle Tank (Cannon)".to_string(),             points: 6,              image: "".to_string()});
+                new_list.units.push(Unit {              name: "Syro Runner Rig".to_string(),                        points: 3,              image: "".to_string()});
+                new_list.units.push(Unit {              name: "Thales Fighter".to_string(),                         points: 7,              image: "".to_string()});
+                new_list.units.push(Unit {              name: "Gun Platform".to_string(),                           points: 7,              image: "".to_string()});
+                new_list.units.push(Unit {              name: "Gorgias Transport".to_string(),                      points: 3,              image: "".to_string()});
         
                 // Supports
                 new_list.supports.push(Support {        name: "Satellite Uplink".to_string(),                       points: 3});
@@ -114,14 +116,14 @@ impl ArmyList {
                 new_list.characters.push(Character {    name: "Mechanic".to_string(),                               points: 2});
 
                 // Units
-                new_list.units.push(Unit {              name: "Steeljacks".to_string(),                             points: 2});
-                new_list.units.push(Unit {              name: "Dust Riders".to_string(),                            points: 3});
-                new_list.units.push(Unit {              name: "Reclaimers".to_string(),                             points: 2});
-                new_list.units.push(Unit {              name: "Tugger".to_string(),                                 points: 2});
-                new_list.units.push(Unit {              name: "Gunwagon".to_string(),                               points: 4});
-                new_list.units.push(Unit {              name: "Ramwagon".to_string(),                               points: 4});
-                new_list.units.push(Unit {              name: "Commuter".to_string(),                               points: 5});
-                new_list.units.push(Unit {              name: "Mobile Fortress".to_string(),                        points: 16});
+                new_list.units.push(Unit {              name: "Steeljacks".to_string(),                             points: 2,              image: "".to_string()});
+                new_list.units.push(Unit {              name: "Dust Riders".to_string(),                            points: 3,              image: "".to_string()});
+                new_list.units.push(Unit {              name: "Reclaimers".to_string(),                             points: 2,              image: "".to_string()});
+                new_list.units.push(Unit {              name: "Tugger".to_string(),                                 points: 2,              image: "".to_string()});
+                new_list.units.push(Unit {              name: "Gunwagon".to_string(),                               points: 4,              image: "".to_string()});
+                new_list.units.push(Unit {              name: "Ramwagon".to_string(),                               points: 4,              image: "".to_string()});
+                new_list.units.push(Unit {              name: "Commuter".to_string(),                               points: 5,              image: "".to_string()});
+                new_list.units.push(Unit {              name: "Mobile Fortress".to_string(),                        points: 16,             image: "".to_string()});
 
                 // Supports
                 new_list.supports.push(Support {        name: "Assault Siren".to_string(),                          points: 5});
@@ -139,22 +141,22 @@ impl ArmyList {
                 new_list.characters.push(Character {    name: "Local Lobbyst".to_string(),                          points: 5});
 
                 // Units
-                new_list.units.push(Unit {    name: "Corporate Infantry".to_string(),                               points: 2});
-                new_list.units.push(Unit {    name: "Infantry AT Squad".to_string(),                                points: 3});
-                new_list.units.push(Unit {    name: "Kukri Scout vehicle".to_string(),                              points: 4});
-                new_list.units.push(Unit {    name: "Saber Artillery".to_string(),                                  points: 6});
-                new_list.units.push(Unit {    name: "Scimitar Artillery".to_string(),                               points: 8});
-                new_list.units.push(Unit {    name: "Tachi Tank".to_string(),                                       points: 6});
-                new_list.units.push(Unit {    name: "Nagamaki Tank".to_string(),                                    points: 7});
-                new_list.units.push(Unit {    name: "Odachi Tank".to_string(),                                      points: 8});
-                new_list.units.push(Unit {    name: "Dagger Drop Pod".to_string(),                                  points: 3});
-                new_list.units.push(Unit {    name: "Mandau Drop Pod".to_string(),                                  points: 3});
-                new_list.units.push(Unit {    name: "Parang Drop Pod".to_string(),                                  points: 3});
-                new_list.units.push(Unit {    name: "Rapier VTOL".to_string(),                                      points: 5});
-                new_list.units.push(Unit {    name: "Dao Walker".to_string(),                                       points: 4});
-                new_list.units.push(Unit {    name: "Jian Walker".to_string(),                                      points: 3});
-                new_list.units.push(Unit {    name: "Estoc Air Transport".to_string(),                              points: 5});
-                new_list.units.push(Unit {    name: "Rapier Gunship".to_string(),                                   points: 7});
+                new_list.units.push(Unit {    name: "Corporate Infantry".to_string(),                               points: 2,              image: "".to_string()});
+                new_list.units.push(Unit {    name: "Infantry AT Squad".to_string(),                                points: 3,              image: "".to_string()});
+                new_list.units.push(Unit {    name: "Kukri Scout vehicle".to_string(),                              points: 4,              image: "".to_string()});
+                new_list.units.push(Unit {    name: "Saber Artillery".to_string(),                                  points: 6,              image: "".to_string()});
+                new_list.units.push(Unit {    name: "Scimitar Artillery".to_string(),                               points: 8,              image: "".to_string()});
+                new_list.units.push(Unit {    name: "Tachi Tank".to_string(),                                       points: 6,              image: "".to_string()});
+                new_list.units.push(Unit {    name: "Nagamaki Tank".to_string(),                                    points: 7,              image: "".to_string()});
+                new_list.units.push(Unit {    name: "Odachi Tank".to_string(),                                      points: 8,              image: "".to_string()});
+                new_list.units.push(Unit {    name: "Dagger Drop Pod".to_string(),                                  points: 3,              image: "".to_string()});
+                new_list.units.push(Unit {    name: "Mandau Drop Pod".to_string(),                                  points: 3,              image: "".to_string()});
+                new_list.units.push(Unit {    name: "Parang Drop Pod".to_string(),                                  points: 3,              image: "".to_string()});
+                new_list.units.push(Unit {    name: "Rapier VTOL".to_string(),                                      points: 5,              image: "".to_string()});
+                new_list.units.push(Unit {    name: "Dao Walker".to_string(),                                       points: 4,              image: "".to_string()});
+                new_list.units.push(Unit {    name: "Jian Walker".to_string(),                                      points: 3,              image: "".to_string()});
+                new_list.units.push(Unit {    name: "Estoc Air Transport".to_string(),                              points: 5,              image: "".to_string()});
+                new_list.units.push(Unit {    name: "Rapier Gunship".to_string(),                                   points: 7,              image: "".to_string()});
 
                 // Supports
                 new_list.supports.push(Support {        name: "Orbital Drop".to_string(),                           points: 3});
@@ -173,19 +175,19 @@ impl ArmyList {
                 new_list.characters.push(Character {    name: "Tank Commander".to_string(),                         points: 3});
 
                 // Units
-                new_list.units.push(Unit {              name: "Infantrymen".to_string(),                            points: 2});
-                new_list.units.push(Unit {              name: "Armored Infantry".to_string(),                       points: 4});
-                new_list.units.push(Unit {              name: "Light Mortar".to_string(),                           points: 3});
-                new_list.units.push(Unit {              name: "Scouts".to_string(),                                 points: 3});
-                new_list.units.push(Unit {              name: "Support Vehicle".to_string(),                        points: 3});
-                new_list.units.push(Unit {              name: "Troop Carrier".to_string(),                          points: 3});
-                new_list.units.push(Unit {              name: "Main Battle Tank".to_string(),                       points: 5});
-                new_list.units.push(Unit {              name: "Energy Tank".to_string(),                            points: 5});
-                new_list.units.push(Unit {              name: "Heavy Battle Tank".to_string(),                      points: 8});
-                new_list.units.push(Unit {              name: "Gunner Walker".to_string(),                          points: 3});
-                new_list.units.push(Unit {              name: "Support Walker".to_string(),                         points: 3});
-                new_list.units.push(Unit {              name: "Rocket Launcher".to_string(),                        points: 6});
-                new_list.units.push(Unit {              name: "Self-Propelled Gun".to_string(),                     points: 6});
+                new_list.units.push(Unit {              name: "Infantrymen".to_string(),                            points: 2,              image: "".to_string()});
+                new_list.units.push(Unit {              name: "Armored Infantry".to_string(),                       points: 4,              image: "".to_string()});
+                new_list.units.push(Unit {              name: "Light Mortar".to_string(),                           points: 3,              image: "".to_string()});
+                new_list.units.push(Unit {              name: "Scouts".to_string(),                                 points: 3,              image: "".to_string()});
+                new_list.units.push(Unit {              name: "Support Vehicle".to_string(),                        points: 3,              image: "".to_string()});
+                new_list.units.push(Unit {              name: "Troop Carrier".to_string(),                          points: 3,              image: "".to_string()});
+                new_list.units.push(Unit {              name: "Main Battle Tank".to_string(),                       points: 5,              image: "mbt.png".to_string()});
+                new_list.units.push(Unit {              name: "Energy Tank".to_string(),                            points: 5,              image: "".to_string()});
+                new_list.units.push(Unit {              name: "Heavy Battle Tank".to_string(),                      points: 8,              image: "".to_string()});
+                new_list.units.push(Unit {              name: "Gunner Walker".to_string(),                          points: 3,              image: "".to_string()});
+                new_list.units.push(Unit {              name: "Support Walker".to_string(),                         points: 3,              image: "".to_string()});
+                new_list.units.push(Unit {              name: "Rocket Launcher".to_string(),                        points: 6,              image: "".to_string()});
+                new_list.units.push(Unit {              name: "Self-Propelled Gun".to_string(),                     points: 6,              image: "".to_string()});
                 
                 // Supports
                 new_list.supports.push(Support {        name: "Direct Command".to_string(),                         points: 1});
@@ -195,7 +197,9 @@ impl ArmyList {
                 new_list.supports.push(Support {        name: "Strafing Run".to_string(),                           points: 6});
 
             }
-            _ => panic!("Faction not ready yet!")
+
+            // In case of extra factions
+            //_ => panic!("Faction not ready yet!") 
         }
 
         new_list

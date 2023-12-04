@@ -17,12 +17,12 @@ impl Component for TopMenu {
     type Message = SharedMessage;
     type Properties = Props;
 
-    fn create(ctx: &Context<Self>) -> Self {
+    fn create(_ctx: &Context<Self>) -> Self {
         TopMenu {
         }    
     }
 
-    fn update(&mut self, ctx: &Context<Self>, msg: Self::Message) -> bool {
+    fn update(&mut self, _ctx: &Context<Self>, _msg: Self::Message) -> bool {
         // match msg {
 
         //     _ => panic!("Unhandled message!")

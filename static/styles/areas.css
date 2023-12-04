@@ -135,3 +135,8 @@
     font-size: 20px; /* Adjust this value to your preference */
     text-transform: uppercase;
 }
+
+.roster-image {
+    max-height: 50%; /* Adjust the height as needed */
+    object-fit: contain; /* Maintain the aspect ratio of the image */
+}
