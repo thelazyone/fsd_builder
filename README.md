@@ -17,7 +17,7 @@ The index.html is the entry point (and for silly reasons has to be kept in the r
 The intermediate files will be copied in a dist folder (which is in .gitignore) before serving.
 
 ## Deployment
-Copying on your website the content of /dist after calling `trunk serve --release` should be enough. Currently however the generated .html lacks some relative paths. Check [#1]([/../../issues/3](https://github.com/thelazyone/fsd_builder/issues/1)) for that. Hopefully it will be fixed soon.
+Copying on your website the content of /dist after calling `trunk serve --release` should be enough. Currently however the generated .html lacks some relative paths. Check [#1](https://github.com/thelazyone/fsd_builder/issues/1) for that. Hopefully it will be fixed soon.
 
 ## Features 
 This army builder is a work in progress, and progressively multiple features will be included

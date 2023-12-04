@@ -107,6 +107,7 @@ impl ArmyList {
             Faction::Union => {
                 
                 // Characters
+                new_list.characters.push(Character {    name: "Union Representative".to_string(),                   points: 5});
                 new_list.characters.push(Character {    name: "Crew Chief".to_string(),                             points: 2});
                 new_list.characters.push(Character {    name: "Demolition Man".to_string(),                         points: 3});
                 new_list.characters.push(Character {    name: "Foreman".to_string(),                                points: 3});
@@ -114,13 +115,12 @@ impl ArmyList {
 
                 // Units
                 new_list.units.push(Unit {              name: "Steeljacks".to_string(),                             points: 2});
-                new_list.units.push(Unit {              name: "Burnerbacks".to_string(),                            points: 3});
                 new_list.units.push(Unit {              name: "Dust Riders".to_string(),                            points: 3});
                 new_list.units.push(Unit {              name: "Reclaimers".to_string(),                             points: 2});
                 new_list.units.push(Unit {              name: "Tugger".to_string(),                                 points: 2});
                 new_list.units.push(Unit {              name: "Gunwagon".to_string(),                               points: 4});
                 new_list.units.push(Unit {              name: "Ramwagon".to_string(),                               points: 4});
-                new_list.units.push(Unit {              name: "Motorbus".to_string(),                               points: 5});
+                new_list.units.push(Unit {              name: "Commuter".to_string(),                               points: 5});
                 new_list.units.push(Unit {              name: "Mobile Fortress".to_string(),                        points: 16});
 
                 // Supports
@@ -142,21 +142,23 @@ impl ArmyList {
                 // Units
                 new_list.units.push(Unit {    name: "Corporate Infantry".to_string(),                               points: 2});
                 new_list.units.push(Unit {    name: "Infantry AT Squad".to_string(),                                points: 3});
+                new_list.units.push(Unit {    name: "Kukri Scout vehicle".to_string(),                              points: 4});
                 new_list.units.push(Unit {    name: "Saber Artillery".to_string(),                                  points: 6});
                 new_list.units.push(Unit {    name: "Scimitar Artillery".to_string(),                               points: 8});
-                new_list.units.push(Unit {    name: "Tachi Tank".to_string(),                                       points: 5});
+                new_list.units.push(Unit {    name: "Tachi Tank".to_string(),                                       points: 6});
                 new_list.units.push(Unit {    name: "Nagamaki Tank".to_string(),                                    points: 7});
-                new_list.units.push(Unit {    name: "Odachi Tank".to_string(),                                      points: 9});
+                new_list.units.push(Unit {    name: "Odachi Tank".to_string(),                                      points: 8});
                 new_list.units.push(Unit {    name: "Dagger Drop Pod".to_string(),                                  points: 3});
                 new_list.units.push(Unit {    name: "Mandau Drop Pod".to_string(),                                  points: 3});
                 new_list.units.push(Unit {    name: "Parang Drop Pod".to_string(),                                  points: 3});
                 new_list.units.push(Unit {    name: "Rapier VTOL".to_string(),                                      points: 5});
                 new_list.units.push(Unit {    name: "Dao Walker".to_string(),                                       points: 4});
                 new_list.units.push(Unit {    name: "Jian Walker".to_string(),                                      points: 3});
-                new_list.units.push(Unit {    name: "Troop Carrier".to_string(),                                    points: 3}); // TODO to remove
+                new_list.units.push(Unit {    name: "Estoc Air Transport".to_string(),                              points: 5});
+                new_list.units.push(Unit {    name: "Rapier Gunship".to_string(),                                   points: 7});
 
                 // Supports
-                new_list.supports.push(Support {        name: "Orbital Drop Pod".to_string(),                       points: 3});
+                new_list.supports.push(Support {        name: "Orbital Drop".to_string(),                           points: 3});
                 new_list.supports.push(Support {        name: "Malware Hack".to_string(),                           points: 2});
                 new_list.supports.push(Support {        name: "Satellite Scan".to_string(),                         points: 1});
                 new_list.supports.push(Support {        name: "Superior Directive".to_string(),                     points: 1});
