@@ -31,7 +31,7 @@ impl ArmyList {
     pub fn get_characters (&self) -> Vec<GenericElementType> {
         let mut out_vec = Vec::<GenericElementType>::new();
         for elem in &self.characters {
-            out_vec.push((elem.get_name(), elem.get_points(), "a_character.png".to_string()));
+            out_vec.push((elem.get_name(), elem.get_points(), "character.png".to_string()));
         }
         out_vec
     }
@@ -47,7 +47,7 @@ impl ArmyList {
     pub fn get_supports (&self) -> Vec<GenericElementType> {
         let mut out_vec = Vec::<GenericElementType>::new();
         for elem in &self.supports {
-            out_vec.push((elem.get_name(), elem.get_points(), "a_character.png".to_string()));
+            out_vec.push((elem.get_name(), elem.get_points(), "support.png".to_string()));
         }
         out_vec
     }
@@ -175,19 +175,19 @@ impl ArmyList {
                 new_list.characters.push(Character {    name: "Tank Commander".to_string(),                         points: 3});
 
                 // Units
-                new_list.units.push(Unit {              name: "Infantrymen".to_string(),                            points: 2,              image: "".to_string()});
-                new_list.units.push(Unit {              name: "Armored Infantry".to_string(),                       points: 4,              image: "".to_string()});
-                new_list.units.push(Unit {              name: "Light Mortar".to_string(),                           points: 3,              image: "".to_string()});
-                new_list.units.push(Unit {              name: "Scouts".to_string(),                                 points: 3,              image: "".to_string()});
-                new_list.units.push(Unit {              name: "Support Vehicle".to_string(),                        points: 3,              image: "".to_string()});
-                new_list.units.push(Unit {              name: "Troop Carrier".to_string(),                          points: 3,              image: "".to_string()});
-                new_list.units.push(Unit {              name: "Main Battle Tank".to_string(),                       points: 5,              image: "mbt.png".to_string()});
-                new_list.units.push(Unit {              name: "Energy Tank".to_string(),                            points: 5,              image: "".to_string()});
-                new_list.units.push(Unit {              name: "Heavy Battle Tank".to_string(),                      points: 8,              image: "".to_string()});
-                new_list.units.push(Unit {              name: "Gunner Walker".to_string(),                          points: 3,              image: "".to_string()});
-                new_list.units.push(Unit {              name: "Support Walker".to_string(),                         points: 3,              image: "".to_string()});
-                new_list.units.push(Unit {              name: "Rocket Launcher".to_string(),                        points: 6,              image: "".to_string()});
-                new_list.units.push(Unit {              name: "Self-Propelled Gun".to_string(),                     points: 6,              image: "".to_string()});
+                new_list.units.push(Unit {              name: "Infantrymen".to_string(),                            points: 2,              image: "enlisted/infantrymen.png".to_string()});
+                new_list.units.push(Unit {              name: "Armored Infantry".to_string(),                       points: 4,              image: "enlisted/armoured_infantry.png".to_string()});
+                new_list.units.push(Unit {              name: "Light Mortar".to_string(),                           points: 3,              image: "enlisted/mortar_team.png".to_string()});
+                new_list.units.push(Unit {              name: "Scouts".to_string(),                                 points: 3,              image: "enlisted/scouts.png".to_string()});
+                new_list.units.push(Unit {              name: "Support Vehicle".to_string(),                        points: 3,              image: "enlisted/support_vehicle.png".to_string()});
+                new_list.units.push(Unit {              name: "Troop Carrier".to_string(),                          points: 3,              image: "enlisted/transport.png".to_string()});
+                new_list.units.push(Unit {              name: "Main Battle Tank".to_string(),                       points: 5,              image: "enlisted/mbt.png".to_string()});
+                new_list.units.push(Unit {              name: "Energy Tank".to_string(),                            points: 5,              image: "enlisted/ebt.png".to_string()});
+                new_list.units.push(Unit {              name: "Heavy Battle Tank".to_string(),                      points: 8,              image: "enlisted/hbt.png".to_string()});
+                new_list.units.push(Unit {              name: "Gunner Walker".to_string(),                          points: 3,              image: "enlisted/gunner_walker.png".to_string()});
+                new_list.units.push(Unit {              name: "Support Walker".to_string(),                         points: 3,              image: "enlisted/support_walker.png".to_string()});
+                new_list.units.push(Unit {              name: "Rocket Launcher".to_string(),                        points: 6,              image: "enlisted/rocket_launcher.png".to_string()});
+                new_list.units.push(Unit {              name: "Self-Propelled Gun".to_string(),                     points: 6,              image: "enlisted/self_propelled_gun.png".to_string()});
                 
                 // Supports
                 new_list.supports.push(Support {        name: "Direct Command".to_string(),                         points: 1});

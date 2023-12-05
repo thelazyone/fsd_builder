@@ -175,9 +175,9 @@ impl MainCanvas {
     
     fn get_image(&self, elem: &RosterElement) -> String {
         match elem {
-            RosterElement::ElemCharacter(_) => "character.png".to_string(),
-            RosterElement::ElemUnit(unit) => unit.image.clone(), 
-            RosterElement::ElemSupport(_) => "support.png".to_string(),
+            RosterElement::ElemCharacter(_) => "character.png".to_string(), // TODO TBR Unused
+            RosterElement::ElemUnit(unit) => unit.image.clone(), // TODO TBR Unused
+            RosterElement::ElemSupport(_) => "support.png".to_string(),// TODO TBR Unused
             RosterElement::ElemOther((_, _, image)) => image.clone(),
         }
     }
