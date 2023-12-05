@@ -79,20 +79,20 @@ impl ArmyList {
                 new_list.characters.push(Character {    name: "Pilot AI".to_string(),                               points: 2});
             
                 // Units
-                new_list.units.push(Unit {              name: "Battle Robots".to_string(),                          points: 3,              image: "".to_string()});
-                new_list.units.push(Unit {              name: "Heavy Robots".to_string(),                           points: 4,              image: "".to_string()});
-                new_list.units.push(Unit {              name: "Light Spider Drones".to_string(),                    points: 2,              image: "".to_string()});
-                new_list.units.push(Unit {              name: "Heavy Spider Drones".to_string(),                    points: 4,              image: "".to_string()});
-                new_list.units.push(Unit {              name: "Socrates Battle Rig (Brawler)".to_string(),          points: 8,              image: "".to_string()});
-                new_list.units.push(Unit {              name: "Socrates Battle Rig (Sharpshooter)".to_string(),     points: 8,              image: "".to_string()});
-                new_list.units.push(Unit {              name: "Socrates Battle Rig (Demolition)".to_string(),       points: 8,              image: "".to_string()});
-                new_list.units.push(Unit {              name: "Zeno Battle Rig".to_string(),                        points: 5,              image: "".to_string()});
-                new_list.units.push(Unit {              name: "Solon Battle Tank (Minigun)".to_string(),            points: 6,              image: "".to_string()});
-                new_list.units.push(Unit {              name: "Solon Battle Tank (Cannon)".to_string(),             points: 6,              image: "".to_string()});
-                new_list.units.push(Unit {              name: "Syro Runner Rig".to_string(),                        points: 3,              image: "".to_string()});
-                new_list.units.push(Unit {              name: "Thales Fighter".to_string(),                         points: 7,              image: "".to_string()});
-                new_list.units.push(Unit {              name: "Gun Platform".to_string(),                           points: 7,              image: "".to_string()});
-                new_list.units.push(Unit {              name: "Gorgias Transport".to_string(),                      points: 3,              image: "".to_string()});
+                new_list.units.push(Unit {              name: "Battle Robots".to_string(),                          points: 3,              image: "tech/battle_robots.png".to_string()});
+                new_list.units.push(Unit {              name: "Heavy Robots".to_string(),                           points: 4,              image: "tech/heavy_robots.png".to_string()});
+                new_list.units.push(Unit {              name: "Light Spider Drones".to_string(),                    points: 2,              image: "tech/light_spider.png".to_string()});
+                new_list.units.push(Unit {              name: "Heavy Spider Drones".to_string(),                    points: 4,              image: "tech/heavy_spider.png".to_string()});
+                new_list.units.push(Unit {              name: "Socrates Battle Rig (Brawler)".to_string(),          points: 8,              image: "tech/socrates_brawler.png".to_string()});
+                new_list.units.push(Unit {              name: "Socrates Battle Rig (Sharpshooter)".to_string(),     points: 8,              image: "tech/socrates_sharpshooter.png".to_string()});
+                new_list.units.push(Unit {              name: "Socrates Battle Rig (Demolition)".to_string(),       points: 8,              image: "tech/socrates_demolition.png".to_string()});
+                new_list.units.push(Unit {              name: "Zeno Battle Rig".to_string(),                        points: 5,              image: "tech/zeno.png".to_string()});
+                new_list.units.push(Unit {              name: "Solon Battle Tank (Minigun)".to_string(),            points: 6,              image: "tech/solon_mg.png".to_string()});
+                new_list.units.push(Unit {              name: "Solon Battle Tank (Cannon)".to_string(),             points: 6,              image: "tech/solon_gun.png".to_string()});
+                new_list.units.push(Unit {              name: "Syro Runner Rig".to_string(),                        points: 3,              image: "tech/syro.png".to_string()});
+                new_list.units.push(Unit {              name: "Thales Fighter".to_string(),                         points: 7,              image: "tech/thales.png".to_string()});
+                new_list.units.push(Unit {              name: "Gun Platform".to_string(),                           points: 7,              image: "tech/gun_platform.png".to_string()});
+                new_list.units.push(Unit {              name: "Gorgias Transport".to_string(),                      points: 3,              image: "tech/gorgias_transport.png".to_string()});
         
                 // Supports
                 new_list.supports.push(Support {        name: "Satellite Uplink".to_string(),                       points: 3});
