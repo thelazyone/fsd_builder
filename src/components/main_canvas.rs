@@ -103,7 +103,7 @@ impl Component for MainCanvas {
                                  ondblclick={ctx.link().callback(move |_| SharedMessage::DeleteElement(i))}>
                                 <div class="content-container">
                                     { self.get_element_name(elem) }
-                                    <img src={format!("/static/images/{}", image_path)} class="roster-image" />
+                                    <img src={format!("./static/images/{}", image_path)} class="roster-image" />
                                     <div class="points-label">{ if self.get_element_points(elem) > 1 {
                                             format!("{} Points", self.get_element_points(elem))
                                         }
