@@ -4,7 +4,7 @@ Army builder for Full Spectrum Dominance.
 You can find more about the game on https://fsd-wargame.com/.
 
 ## Live Demo
-Here's a WIP version deployed as of 28/9/2023: https://test.thelazyforger.com/fsd_roster/
+Here's a WIP live demo deployed as of 06/12/2023: https://fsd-wargame.com/roster/
 
 ## Installation
 To get started, you need the following:
