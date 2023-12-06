@@ -17,7 +17,8 @@ use crate::models::roster::{Roster, RosterElement};
 #[derive(Properties, Clone, PartialEq)]
 pub struct Props {
     pub roster: Rc<RefCell<Roster>>,
-    pub on_roster_updated: Callback<()>
+    pub on_roster_updated: Callback<()>,
+    pub is_dark_mode: bool,
 }
 
 pub struct MainCanvas {
@@ -94,7 +95,16 @@ impl Component for MainCanvas {
                 </div>
                 {
                     for roster.elements.iter().enumerate().map(|(i, elem)| {
+
+                        // Preparing a couple of variables for the conditional below.
                         let image_path = self.get_image(elem);
+                        console::log_1(&format!("ImagePath is: {:?}", image_path).into());
+                        let image_class = if {ctx.props().is_dark_mode} && {image_path == "character.png" || image_path == "support.png"} {
+                            "inverted-roster-image"
+                        } else {
+                            "roster-image"
+                        };
+
                         html!{
                             <div class="hoverable-area"
                                  onmouseover={ctx.link().callback(move |_| SharedMessage::ShowTooltip(i))}
@@ -103,7 +113,7 @@ impl Component for MainCanvas {
                                  ondblclick={ctx.link().callback(move |_| SharedMessage::DeleteElement(i))}>
                                 <div class="content-container">
                                     { self.get_element_name(elem) }
-                                    <img src={format!("./static/images/{}", image_path)} class="roster-image" />
+                                    <img src={format!("./static/images/{}", image_path)} class={image_class} />
                                     <div class="points-label">{ if self.get_element_points(elem) > 1 {
                                             format!("{} Points", self.get_element_points(elem))
                                         }
@@ -134,10 +144,6 @@ impl Component for MainCanvas {
     fn changed(&mut self, _: &Context<Self>, new_props: &Self::Properties) -> bool {
         let old_elements = &self.props.roster.borrow().elements.clone();
         let new_elements = &new_props.roster.borrow().elements.clone();
-        
-        console::log_1(&"CALLED CHANGED!".into());
-        console::log_1(&format!("Old Roster has {:?} elements", old_elements.len()).into());
-        console::log_1(&format!("New Roster has {:?} elements", new_elements.len()).into());
         
         self.props = new_props.clone();
         true

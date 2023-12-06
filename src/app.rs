@@ -165,6 +165,7 @@ impl Component for App {
             
             SharedMessage::ToggleTheme => {
                 self.is_dark_mode = !self.is_dark_mode;
+                console::log_1(&"calling Update".into());
                 true // Return true to re-render the component
             }
 
@@ -173,8 +174,9 @@ impl Component for App {
     }
 
     fn view(&self, ctx: &Context<Self>) -> Html {
+
         html! {
-            <div class="app">
+            <div class={if self.is_dark_mode { "app dark-mode" } else { "app" }}>
                 <div class="top-menu">
                     <TopMenu 
                         on_load_roster = {ctx.link().callback(|_| SharedMessage::LoadRoster)} 
@@ -195,7 +197,8 @@ impl Component for App {
                     <MainCanvas 
                         roster = {self.roster.clone()} 
                         on_roster_updated = {ctx.link().callback(|_| SharedMessage::NotifyRosterUpdated)}
-                    />
+                        is_dark_mode = {self.is_dark_mode}
+                        />
                 </div>
                 <div class="right-bar">
                     <RightBar 

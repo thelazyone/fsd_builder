@@ -8,7 +8,6 @@
     text-align: center;
     background-color: transparent;
     border: none;
-    color: black;
     padding: 12px 0px;
     vertical-align: middle;
     text-decoration: none;
@@ -22,7 +21,6 @@
     text-align: center;
     background-color: transparent;
     border: none;
-    color: black;
     padding: 0px 0px;
     vertical-align: middle;
     text-decoration: none;
@@ -34,7 +32,6 @@
 .top-menu button {
     background-color: transparent;
     border: none;
-    color: black;
     padding: 8px 48px;
     text-align: center;
     vertical-align: middle;
@@ -50,12 +47,3 @@
     transition: 0.7s;
 }
 
-.dark-mode {
-    background-color: #333; /* Dark background */
-    color: #fff; /* Light text */
-}
-
-/* Add specific styles for components in night mode */
-.dark-mode .top-menu {
-    background-color: #222;
-}

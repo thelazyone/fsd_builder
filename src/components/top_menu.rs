@@ -1,4 +1,4 @@
-use yew::{prelude::*, callback};
+use yew::prelude::*;
 
 // A common definition for all messages:
 use crate::shared_messages::SharedMessage;

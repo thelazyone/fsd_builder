@@ -20,3 +20,28 @@
 .right-bar {
     grid-column: 3;
 }
+
+
+/* DARK MODE */
+
+.dark-mode {
+    background-color: #111; /* Dark background */
+    color: #fff; /* Light text */
+}
+
+.dark-mode .hoverable-area {
+    border: 4px solid white;
+}
+
+.dark-mode .top-menu,
+.dark-mode .right-bar,
+.dark-mode .left-bar {
+    background-color: #111;
+    color: #fff; /* Light text for specific sections */
+}
+
+.dark-mode .top-menu button,
+.dark-mode .right-bar button,
+.dark-mode .left-bar button {
+    color: #fff; /* Light text for buttons */
+}
