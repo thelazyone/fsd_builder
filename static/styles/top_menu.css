@@ -49,3 +49,13 @@
     background-color: rgba(220, 220, 220, 0.5);
     transition: 0.7s;
 }
+
+.dark-mode {
+    background-color: #333; /* Dark background */
+    color: #fff; /* Light text */
+}
+
+/* Add specific styles for components in night mode */
+.dark-mode .top-menu {
+    background-color: #222;
+}

@@ -39,6 +39,9 @@ pub struct App{
 
     // input file
     file_input_ref: NodeRef,
+
+    // Dark/light mode
+    is_dark_mode: bool,
 }
 
 
@@ -67,6 +70,7 @@ impl Component for App {
             roster: Rc::new(RefCell::new(Roster::new().into())),
             right_bar_model: Vec::<GenericElementType>::new(),
             file_input_ref: NodeRef::default(),
+            is_dark_mode: false,
         }
     }
 
@@ -140,11 +144,13 @@ impl Component for App {
                     into_iter().map(|elem| {elem}).collect();
                 true
             }
+
             SharedMessage::ShowCharacters(faction) => {
                 self.right_bar_model = armylist::ArmyList::new(faction).get_characters().
                     into_iter().map(|elem| {elem}).collect();
                 true
             }
+
             SharedMessage::ShowSupports(faction) => {
                 self.right_bar_model = armylist::ArmyList::new(faction).get_supports().
                     into_iter().map(|elem| {elem}).collect();
@@ -157,6 +163,10 @@ impl Component for App {
                 true
             }
             
+            SharedMessage::ToggleTheme => {
+                self.is_dark_mode = !self.is_dark_mode;
+                true // Return true to re-render the component
+            }
 
             _ => false // Passing to the child objects to be handled.
         }    
@@ -170,6 +180,8 @@ impl Component for App {
                         on_load_roster = {ctx.link().callback(|_| SharedMessage::LoadRoster)} 
                         on_clear_roster = {ctx.link().callback(|_| SharedMessage::ClearRoster)} 
                         on_save_roster = {ctx.link().callback(|_| SharedMessage::SaveRoster)} 
+                        on_toggle_theme = {ctx.link().callback(|_| SharedMessage::ToggleTheme)}
+                        is_dark_mode = {self.is_dark_mode}
                     />
                 </div>
                 <div class="left-bar">
