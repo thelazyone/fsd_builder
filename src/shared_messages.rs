@@ -17,6 +17,7 @@ pub enum SharedMessage {
     AddToRoster(GenericElementType),
     NotifyRosterUpdated,
     DeleteElement(usize),
+    ReorderElements,
 
     FileSelected,
     FileContentReceived(String),

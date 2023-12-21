@@ -9,6 +9,9 @@ use serde_json;
 // For custom serde errors:
 use serde::de;
 
+// For browser debugging
+use web_sys::console;
+
 
 #[derive(Clone, PartialEq, Serialize, Deserialize)]
 pub enum RosterElement {
@@ -53,7 +56,9 @@ impl Roster {
     }
 
     pub fn add_element(&mut self, element: RosterElement) {
+        console::log_1(&format!("Adding element").into());
         self.elements.push(element);
+        console::log_1(&format!("Now it has {:?} elements", self.elements.len()).into());
     }
 
     // JSON serialization (static methods):
@@ -61,13 +66,7 @@ impl Roster {
         
         let roster: Roster = serde_json::from_str(json_str)?;
 
-        // let mut roster: Roster = serde_json::from_str(json_str)?;
-        // roster.add_element(Character{name: "char1".to_string(), points:2}.into());
-        // roster.add_element(Unit{name: "unit1".to_string(), points:3}.into());
-        // roster.add_element(Unit{name: "unit2".to_string(), points:4}.into());
-        // roster.add_element(Support{name: "support1".to_string(), points:5}.into());
-
-        if roster.version < 1 { // Assuming 1 is the current version
+        if roster.version < 1 { // Assuming 1 is the current version // TODO handle versioning better
             // Handle older versions differently
             // For now, just return an error
             return Err(de::Error::custom("Roster version is too old"));

@@ -128,7 +128,7 @@ impl Component for App {
             SharedMessage::FileContentReceived(text) => {
                 match Roster::from_json(&text) {
                     Ok(roster) => {
-                        *self.roster.borrow_mut() = roster; // todo can't 
+                        *self.roster.borrow_mut() = roster;
                     }
 
                     Err(_e) => {
@@ -198,6 +198,7 @@ impl Component for App {
                         roster = {self.roster.clone()} 
                         on_roster_updated = {ctx.link().callback(|_| SharedMessage::NotifyRosterUpdated)}
                         is_dark_mode = {self.is_dark_mode}
+                        on_reorder = {ctx.link().callback(|_| SharedMessage::ReorderElements)} 
                         />
                 </div>
                 <div class="right-bar">

@@ -19,6 +19,7 @@ pub struct Props {
     pub roster: Rc<RefCell<Roster>>,
     pub on_roster_updated: Callback<()>,
     pub is_dark_mode: bool,
+    pub on_reorder: Callback<SharedMessage>,
 }
 
 pub struct MainCanvas {
@@ -55,6 +56,56 @@ impl Component for MainCanvas {
                     roster.elements.remove(index);
                     self.props.on_roster_updated.emit(());
                 }
+                self.tooltip_visible = false; 
+                true
+            }
+
+            SharedMessage::ReorderElements => {
+
+                let mut roster = self.props.roster.borrow_mut();
+
+                let mut new_roster_characters = Roster::new();
+                let mut new_roster_units = Roster::new();
+                let mut new_roster_supports = Roster::new();
+                let mut new_roster_others = Roster::new();
+
+                console::log_1(&format!("Called reorder element with {:?} elems.", roster.elements.len()).into());
+
+                // Searching for Characters:
+                roster.elements.iter().for_each(|element| {
+                    match element {
+
+                        // TODO the whole elems types are going to be removed eventually and even now everything is marked as 
+                        // ElemOther. Therefore, I need a different way to organize based on the element type. This is not fun, but hey,
+                        RosterElement::ElemCharacter(character) => new_roster_characters.add_element(RosterElement::ElemCharacter(character.clone())),
+                        RosterElement::ElemUnit(unit) => new_roster_units.add_element(RosterElement::ElemUnit(unit.clone())),
+                        RosterElement::ElemSupport(support) => new_roster_supports.add_element(RosterElement::ElemSupport(support.clone())),
+                        RosterElement::ElemOther((name, points, image)) => {
+                            if image.contains("character.png") {
+                                // Handle character case
+                                new_roster_characters.add_element(RosterElement::ElemOther((name.clone(), *points, image.clone())));
+                            } else if image.contains("support.png") {
+                                // Handle support case
+                                new_roster_supports.add_element(RosterElement::ElemOther((name.clone(), *points, image.clone())));
+                            } else {
+                                // Handle other cases
+                                new_roster_units.add_element(RosterElement::ElemOther((name.clone(), *points, image.clone())));
+                            }
+                        },
+                            
+                    };
+                });
+
+                console::log_1(&format!("there are {:?} chars", new_roster_characters.elements.len() ).into());
+                console::log_1(&format!("there are {:?} other", new_roster_others.elements.len() ).into());
+
+                // Inserting in the "good" roster the elements of the various kinds.
+                roster.elements.clear();
+                roster.elements.append(&mut new_roster_characters.elements);
+                roster.elements.append(&mut new_roster_units.elements);
+                roster.elements.append(&mut new_roster_supports.elements);
+                roster.elements.append(&mut new_roster_others.elements);
+                
                 self.tooltip_visible = false; 
                 true
             }
@@ -98,7 +149,6 @@ impl Component for MainCanvas {
 
                         // Preparing a couple of variables for the conditional below.
                         let image_path = self.get_image(elem);
-                        console::log_1(&format!("ImagePath is: {:?}", image_path).into());
                         let image_class = if {ctx.props().is_dark_mode} && {image_path == "character.png" || image_path == "support.png"} {
                             "inverted-roster-image"
                         } else {
@@ -126,6 +176,11 @@ impl Component for MainCanvas {
                         }
                     })
                 }
+                <div class="reorder-button-area">
+                    <div>
+                        <button class="reorder-button" onclick={ctx.link().callback(move |_|  SharedMessage::ReorderElements)}>{"Reorder"}</button>
+                    </div>
+                </div>
                 {
                     if self.tooltip_visible {
                         html! {

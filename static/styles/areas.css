@@ -146,3 +146,15 @@
     object-fit: contain; /* Maintain the aspect ratio of the image */
     filter: invert(1);
 }
+
+.reorder-button-area  {
+    grid-column: 1 / -1; /* This will make it span the full width of the grid */
+    font-weight: bold;  /* Thick style */
+    padding: 20px;
+    background-color: transparent;  /* Light gray background for visibility */
+    border-top: 1px solid #ccc;  /* A border at the bottom */
+    text-align: center;
+    font-size: 24px;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    font-weight: bold;
+}
