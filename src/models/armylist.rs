@@ -155,7 +155,6 @@ impl ArmyList {
                 new_list.units.push(Unit {    name: "Dagger Drop Pod".to_string(),                                  points: 3,              image: "conglomerate/dagger.png".to_string()});
                 new_list.units.push(Unit {    name: "Mandau Drop Pod".to_string(),                                  points: 3,              image: "conglomerate/mandau.png".to_string()});
                 new_list.units.push(Unit {    name: "Parang Drop Pod".to_string(),                                  points: 3,              image: "conglomerate/parang.png".to_string()});
-                new_list.units.push(Unit {    name: "Rapier VTOL".to_string(),                                      points: 5,              image: "conglomerate/rapier.png".to_string()});
                 new_list.units.push(Unit {    name: "Dao Walker".to_string(),                                       points: 4,              image: "conglomerate/dao.png".to_string()});
                 new_list.units.push(Unit {    name: "Jian Walker".to_string(),                                      points: 3,              image: "conglomerate/jian.png".to_string()});
                 new_list.units.push(Unit {    name: "Estoc Air Transport".to_string(),                              points: 5,              image: "conglomerate/estoc.png".to_string()});
