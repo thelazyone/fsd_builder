@@ -13,7 +13,7 @@
     grid-column: 1;
 }
 
-.main-canvas {
+.main-canvas{
     grid-column: 2;
 }
 
@@ -42,6 +42,7 @@
 
 .dark-mode .top-menu button,
 .dark-mode .right-bar button,
-.dark-mode .left-bar button {
+.dark-mode .left-bar button,
+.dark-mode .main-canvas button {
     color: #fff; /* Light text for buttons */
 }

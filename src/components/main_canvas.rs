@@ -96,8 +96,11 @@ impl Component for MainCanvas {
                     };
                 });
 
-                console::log_1(&format!("there are {:?} chars", new_roster_characters.elements.len() ).into());
-                console::log_1(&format!("there are {:?} other", new_roster_others.elements.len() ).into());
+                // Now sorting within one category
+                new_roster_characters.elements.sort_by(|a, b| self.get_element_name(a).cmp(&self.get_element_name(b))); // Sort them
+                new_roster_units.elements.sort_by(|a, b| self.get_element_name(a).cmp(&self.get_element_name(b))); // Sort them
+                new_roster_supports.elements.sort_by(|a, b| self.get_element_name(a).cmp(&self.get_element_name(b))); // Sort them
+                new_roster_others.elements.sort_by(|a, b| self.get_element_name(a).cmp(&self.get_element_name(b))); // Sort them
 
                 // Inserting in the "good" roster the elements of the various kinds.
                 roster.elements.clear();
@@ -177,9 +180,7 @@ impl Component for MainCanvas {
                     })
                 }
                 <div class="reorder-button-area">
-                    <div>
-                        <button class="reorder-button" onclick={ctx.link().callback(move |_|  SharedMessage::ReorderElements)}>{"Reorder"}</button>
-                    </div>
+                    <button onclick = {ctx.link().callback(move |_|  SharedMessage::ReorderElements)}>{"REORDER"}</button>
                 </div>
                 {
                     if self.tooltip_visible {

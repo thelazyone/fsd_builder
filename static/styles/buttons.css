@@ -5,7 +5,7 @@
     width: auto;
 }
 
-.left-bar button, .right-bar button {
+.left-bar button, .right-bar button, .central-area button {
     display: block; /* This ensures each button is on a new line */
     background-color: transparent;
     border: none;
@@ -19,7 +19,7 @@
     width: 100%;
 }
 
-.left-bar button:hover, .right-bar button:hover {
+.left-bar button:hover, .right-bar button:hover, .central-area button:hover {
     background-color: rgba(220, 220, 220, 0.5);
     transition: 0.7s;
 }
