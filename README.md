@@ -20,8 +20,7 @@ The intermediate files will be copied in a dist folder (which is in .gitignore) 
 Copying on your website the content of /dist after calling `trunk serve --release` should be enough. Currently however the generated .html lacks some relative paths. Check [#1](https://github.com/thelazyone/fsd_builder/issues/1) for that. Hopefully it will be fixed soon.
 
 ## Features 
-This army builder is a work in progress, and progressively multiple features will be included
-* Creating lists for each faction (plain list of Units, Supports and Characters)
+This army builder is a work in progress, and progressively multiple features will be included:
 * Assigning Characters and Units' option
 * Building a printable roster sheet for the faction
 * Custom Units (?)
