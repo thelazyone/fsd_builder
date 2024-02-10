@@ -1,3 +1,4 @@
 [build]
 crate = "fsd_builder"
 manifest = "Cargo.toml"
+public_url = "./"
