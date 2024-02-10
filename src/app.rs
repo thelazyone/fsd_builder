@@ -91,7 +91,10 @@ impl Component for App {
                 match self.roster.borrow().to_json() {
                     Ok(json_string) => {
                         let document = web_sys::window().unwrap().document().unwrap();
-                        let a = document.create_element("a").unwrap().dyn_into::<web_sys::HtmlAnchorElement>().unwrap();
+                        let a = document.create_element("a")
+                            .unwrap()
+                            .dyn_into::<web_sys::HtmlAnchorElement>()
+                            .unwrap();
                         
                         // Convert the JSON string to a Blob
                         let mut blob_parts: web_sys::BlobPropertyBag = web_sys::BlobPropertyBag::new();
