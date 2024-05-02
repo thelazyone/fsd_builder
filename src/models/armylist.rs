@@ -1,5 +1,6 @@
 // TODO this should be moved in a different folder than 
 // "models", more like "data" or indeed "catalogue"
+// 5-01-2024 MTL, updated points to match cards v1.3
 use crate::models::character::Character;
 use crate::models::unit::Unit;
 use crate::models::support::Support;
@@ -188,15 +189,15 @@ impl ArmyList {
                 new_list.units.push(Unit {              name: "Heavy Battle Tank".to_string(),                      points: 8,              image: "enlisted/hbt.png".to_string()});
                 new_list.units.push(Unit {              name: "Gunner Walker".to_string(),                          points: 3,              image: "enlisted/gunner_walker.png".to_string()});
                 new_list.units.push(Unit {              name: "Support Walker".to_string(),                         points: 3,              image: "enlisted/support_walker.png".to_string()});
-                new_list.units.push(Unit {              name: "Rocket Launcher".to_string(),                        points: 6,              image: "enlisted/rocket_launcher.png".to_string()});
-                new_list.units.push(Unit {              name: "Self-Propelled Gun".to_string(),                     points: 6,              image: "enlisted/self_propelled_gun.png".to_string()});
+                new_list.units.push(Unit {              name: "Rocket Launcher".to_string(),                        points: 7,              image: "enlisted/rocket_launcher.png".to_string()});
+                new_list.units.push(Unit {              name: "Self-Propelled Gun".to_string(),                     points: 7,              image: "enlisted/self_propelled_gun.png".to_string()});
                 
                 // Supports
                 new_list.supports.push(Support {        name: "Direct Command".to_string(),                         points: 1});
                 new_list.supports.push(Support {        name: "Guided Missile".to_string(),                         points: 2});
                 new_list.supports.push(Support {        name: "Spotter Drones".to_string(),                         points: 2});
                 new_list.supports.push(Support {        name: "Mortar Fire".to_string(),                            points: 6});
-                new_list.supports.push(Support {        name: "Strafing Run".to_string(),                           points: 6});
+                new_list.supports.push(Support {        name: "Strafing Run".to_string(),                           points: 7});
 
             }
 
