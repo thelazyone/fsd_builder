@@ -5,6 +5,7 @@ use serde::{Serialize, Deserialize};
 pub struct Unit {
     pub name : String,
     pub points : u32,
+    pub attached_elements : Vec<String>,
     pub image : String,
 }
 
@@ -15,5 +16,9 @@ impl Element for Unit {
 
     fn get_points (&self) -> u32 {
         self.points
+    }
+
+    fn get_attached (&self) -> Vec<String> {
+        self.attached_elements.clone()
     }
 }

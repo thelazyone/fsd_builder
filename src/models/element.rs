@@ -6,5 +6,6 @@ pub trait Element {
     fn get_name(&self) -> String;
     fn get_points(&self) -> u32;
     fn get_icon(&self) -> Option<RgbImage> {None}
+    fn get_attached(&self) -> Vec<String>;
     fn generate_card(&self) -> Option<RgbImage> {None}
 }

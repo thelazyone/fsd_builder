@@ -15,4 +15,8 @@ impl Element for Support {
     fn get_points (&self) -> u32 {
         self.points
     }
+
+    fn get_attached(&self) -> Vec<String> {
+        Vec::<String>::new()
+    }
 }

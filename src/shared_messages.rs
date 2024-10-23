@@ -15,6 +15,7 @@ pub enum SharedMessage {
     ShowSupports(Faction),
 
     AddToRoster(GenericElementType),
+    AddToElement(usize /* Index of the element */, GenericElementType),
     NotifyRosterUpdated,
     DeleteElement(usize),
     ReorderElements,

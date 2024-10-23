@@ -165,6 +165,22 @@ impl Component for App {
                 ctx.link().callback(|_| SharedMessage::NotifyRosterUpdated).emit(());
                 true
             }
+
+            SharedMessage::AddToElement(target_index, element_to_attach) => {
+
+                let mut roster_ref = self.roster.borrow_mut();
+
+                if let Some(target_element) = roster_ref.elements.get_mut(target_index) {
+                    if let RosterElement::ElemUnit(unit) = target_element {
+                        unit.attached_elements.push(element_to_attach.0.clone());
+                    } else {
+                        // Handle non-unit target elements if necessary
+                    }
+                }
+
+                ctx.link().callback(|_| SharedMessage::NotifyRosterUpdated).emit(());
+                true
+            }
             
             SharedMessage::ToggleTheme => {
                 self.is_dark_mode = !self.is_dark_mode;

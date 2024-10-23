@@ -1,3 +1,5 @@
+use std::string;
+
 use super::element::Element;
 use serde::{Serialize, Deserialize};
 
@@ -14,5 +16,9 @@ impl Element for Character {
 
     fn get_points (&self) -> u32 {
         self.points
+    }
+
+    fn get_attached(&self) -> Vec<String> {
+        Vec::<String>::new()
     }
 }
