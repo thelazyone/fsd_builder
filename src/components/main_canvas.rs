@@ -27,7 +27,9 @@ pub struct MainCanvas {
     tooltip_visible: bool,
     tooltip_content: Option<Html>,
     tooltip_x: i32,
-    tooltip_y: i32,}
+    tooltip_y: i32,    
+    selected_index: Option<usize>,
+}
 
 impl Component for MainCanvas {
     type Message = SharedMessage;
@@ -40,11 +42,13 @@ impl Component for MainCanvas {
             tooltip_content: None,
             tooltip_x: 0,
             tooltip_y: 0,
+            selected_index: None,
         }
     }
 
     fn update(&mut self, ctx: &Context<Self>, msg: Self::Message) -> bool {
         match msg {
+
             SharedMessage::NotifyRosterUpdated => {
                 console::log_1(&"Roster updated notification received in MAIN CANVAS".into());
                 true
@@ -132,6 +136,11 @@ impl Component for MainCanvas {
                 self.tooltip_visible = false;
                 true
             }
+
+            SharedMessage::SelectElement(index) => {
+                self.selected_index = Some(index);
+                true
+            },
             
             _ => panic!("Wrong message received!")
         }
