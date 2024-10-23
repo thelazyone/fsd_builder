@@ -52,16 +52,12 @@
     transition: background-color 0.3s ease; /* Transition for smooth animation */
 }
 
-.hoverable-area.selected {
-    border: 2px solid blue; 
-}
-
 .content-container {
     display: flex;
     flex-direction: column;
-    justify-content: center; /* This will vertically center the content */
-    align-items: center; /* This will horizontally center the content */
-    height: 100%; /* Take up the full height of the parent */
+    justify-content: center;
+    align-items: center; 
+    height: 100%;
 }
 
 .hoverable-area:hover::before {
@@ -78,6 +74,10 @@
 
 .hoverable-area:hover {
     background-color: #eee; /* Darker grey when hovered */
+}
+
+.hoverable-area.selected {
+    background-color: #ddd; /* Darker grey when hovered */
 }
 
 .total-points {

@@ -138,7 +138,14 @@ impl Component for MainCanvas {
             }
 
             SharedMessage::SelectElement(index) => {
-                self.selected_index = Some(index);
+                console::log_1(&format!("Selecting element {:?}.", index).into());
+
+                if self.selected_index == Some(index) {
+                    self.selected_index = None;
+                }
+                else {
+                    self.selected_index = Some(index); 
+                }
                 true
             },
             
@@ -159,6 +166,11 @@ impl Component for MainCanvas {
                 {
                     for roster.elements.iter().enumerate().map(|(i, elem)| {
 
+                        // Checking for selected elements, with a different css look.
+                        let is_selected = self.selected_index == Some(i);
+                        let element_class = if is_selected {"hoverable-area selected" } else { "hoverable-area" };
+
+
                         // Preparing a couple of variables for the conditional below.
                         let image_path = self.get_image(elem);
                         let image_class = if {ctx.props().is_dark_mode} && {image_path == "character.png" || image_path == "support.png"} {
@@ -168,11 +180,12 @@ impl Component for MainCanvas {
                         };
 
                         html!{
-                            <div class="hoverable-area"
-                                 onmouseover={ctx.link().callback(move |_| SharedMessage::ShowTooltip(i))}
-                                 onmousemove={ctx.link().callback(move |e: MouseEvent| SharedMessage::MoveTooltip(e.client_x(), e.client_y()))}
-                                 onmouseout={ctx.link().callback(|_| SharedMessage::HideTooltip)}
-                                 ondblclick={ctx.link().callback(move |_| SharedMessage::DeleteElement(i))}>
+                            <div class={element_class}
+                                onclick={ctx.link().callback(move |_| SharedMessage::SelectElement(i))}
+                                onmouseover={ctx.link().callback(move |_| SharedMessage::ShowTooltip(i))}
+                                onmousemove={ctx.link().callback(move |e: MouseEvent| SharedMessage::MoveTooltip(e.client_x(), e.client_y()))}
+                                onmouseout={ctx.link().callback(|_| SharedMessage::HideTooltip)}
+                                ondblclick={ctx.link().callback(move |_| SharedMessage::DeleteElement(i))}>
                                 <div class="content-container">
                                     { self.get_element_name(elem) }
                                     <img src={format!("./static/images/{}", image_path)} class={image_class} />
@@ -183,6 +196,7 @@ impl Component for MainCanvas {
                                             "1 Point".to_string()
                                         }}
                                     </div>
+                                    { self.render_attached_elements(elem) }
                                 </div>
                             </div>
                         }
@@ -253,4 +267,22 @@ impl MainCanvas {
         }
     }
 
+    fn render_attached_elements(&self, elem: &RosterElement) -> Html {
+        match elem {
+            RosterElement::ElemUnit(unit) => {
+                if !unit.attached_elements.is_empty() {
+                    html! {
+                        <div class="attached-cards">
+                            { for unit.attached_elements.iter().map(|card_name| html!{
+                                <div class="attached-card-name">{ card_name }</div>
+                            }) }
+                        </div>
+                    }
+                } else {
+                    html! {}
+                }
+            },
+            _ => html! {}
+        }
+    }
 }
