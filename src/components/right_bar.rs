@@ -10,6 +10,7 @@ pub struct Props {
     pub model: Vec<RosterElement>,
     pub on_element_action: Callback<SharedMessage>,
     pub selected_element_index: Option<usize>, 
+    pub on_deselect_elements: Callback<SharedMessage>,
 }
 
 pub struct RightBar {}
@@ -41,18 +42,23 @@ impl Component for RightBar {
                             RosterElement::ElemSupport(_) => {"support.png".to_string()}
                             _ => {"".to_string()}
                         };
-                        let button_string = name.clone().to_uppercase();
-                        
-                        let elem = elem.clone();
 
+                        let elem = elem.clone();
+                        
                         html! {
                             <button
                                 onclick={Callback::from(move |_| {
+                                    let mut should_be_attached: bool = false;
                                     if let Some(index) = selected_index {
-                                        // If an element is selected, send AddToElement
-                                        callback.emit(SharedMessage::AddToElement(index, elem.clone()));
-                                    } else {
+                                        // Checking if attachable.
+                                        if let RosterElement::ElemCharacter(character) = elem.clone() {
+                                            should_be_attached = true;
+                                            callback.emit(SharedMessage::AddToElement(index, elem.clone()));
+                                        }
+                                    }
+                                    if !should_be_attached {
                                         // No element selected, add to roster
+                                        callback.emit(SharedMessage::DeselectElements);
                                         callback.emit(SharedMessage::AddToRoster(elem.clone()));
                                     }
                                 })}

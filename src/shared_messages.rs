@@ -28,6 +28,7 @@ pub enum SharedMessage {
     MoveTooltip(i32, i32),
     HideTooltip,
     SelectElement(usize),
+    DeselectElements,
 
     ToggleTheme,
 

@@ -209,7 +209,12 @@ impl Component for App {
                     self.selected_index = Some(index); 
                 }
                 true
-            },
+            }
+
+            SharedMessage::DeselectElements => {
+                self.selected_index = None;
+                true
+            }
 
             _ => false // Passing to the child objects to be handled.
         }    
@@ -250,6 +255,7 @@ impl Component for App {
                         model = {self.right_bar_model.clone()}
                         on_element_action={ctx.link().callback(|msg| msg)}
                         selected_element_index={self.selected_index} 
+                        on_deselect_elements={ctx.link().callback(|_| SharedMessage::DeselectElements)}  
                     />                    
                 </div>
 
