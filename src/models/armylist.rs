@@ -6,8 +6,6 @@ use crate::models::unit::Unit;
 use crate::models::support::Support;
 use crate::models::element::Element;
 
-use crate::shared_messages::GenericElementType;
-
 // For serialization
 use serde::{Serialize, Deserialize};
 
@@ -29,28 +27,16 @@ pub struct ArmyList {
 // Various utility functions for the armylist: 
 impl ArmyList {
 
-    pub fn get_characters (&self) -> Vec<GenericElementType> {
-        let mut out_vec = Vec::<GenericElementType>::new();
-        for elem in &self.characters {
-            out_vec.push((elem.get_name(), elem.get_points(), "character.png".to_string()));
-        }
-        out_vec
+    pub fn get_characters (&self) -> Vec<Character> {
+        self.characters.clone()
     }
 
-    pub fn get_units (&self) -> Vec<GenericElementType> {
-        let mut out_vec = Vec::<GenericElementType>::new();
-        for elem in &self.units {
-            out_vec.push((elem.get_name(), elem.get_points(), elem.image.clone()));
-        }
-        out_vec
+    pub fn get_units (&self) -> Vec<Unit> {
+        self.units.clone()
     }
 
-    pub fn get_supports (&self) -> Vec<GenericElementType> {
-        let mut out_vec = Vec::<GenericElementType>::new();
-        for elem in &self.supports {
-            out_vec.push((elem.get_name(), elem.get_points(), "support.png".to_string()));
-        }
-        out_vec
+    pub fn get_supports (&self) -> Vec<Support> {
+        self.supports.clone()
     }
 }
 

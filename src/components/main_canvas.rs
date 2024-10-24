@@ -84,16 +84,16 @@ impl Component for MainCanvas {
                         RosterElement::ElemCharacter(character) => new_roster_characters.add_element(RosterElement::ElemCharacter(character.clone())),
                         RosterElement::ElemUnit(unit) => new_roster_units.add_element(RosterElement::ElemUnit(unit.clone())),
                         RosterElement::ElemSupport(support) => new_roster_supports.add_element(RosterElement::ElemSupport(support.clone())),
-                        RosterElement::ElemOther((name, points, image)) => {
+                        RosterElement::ElemOther((name, points, attached, image)) => {
                             if image.contains("character.png") {
                                 // Handle character case
-                                new_roster_characters.add_element(RosterElement::ElemOther((name.clone(), *points, image.clone())));
+                                new_roster_characters.add_element(RosterElement::ElemOther((name.clone(), *points, Vec::<String>::new(), image.clone())));
                             } else if image.contains("support.png") {
                                 // Handle support case
-                                new_roster_supports.add_element(RosterElement::ElemOther((name.clone(), *points, image.clone())));
+                                new_roster_supports.add_element(RosterElement::ElemOther((name.clone(), *points, Vec::<String>::new(), image.clone())));
                             } else {
                                 // Handle other cases
-                                new_roster_units.add_element(RosterElement::ElemOther((name.clone(), *points, image.clone())));
+                                new_roster_units.add_element(RosterElement::ElemOther((name.clone(), *points, attached.clone(), image.clone())));
                             }
                         },
                             
@@ -226,7 +226,7 @@ impl MainCanvas {
             RosterElement::ElemCharacter(character) => format!("Character: {:?}", character.name),
             RosterElement::ElemUnit(unit) => format!("Unit: {:?}", unit.name),
             RosterElement::ElemSupport(support) => format!("Support: {:?}", support.name),
-            RosterElement::ElemOther((name, _ ,_)) => format!("{}", name),
+            RosterElement::ElemOther((name, _ , _, _)) => format!("{}", name),
         }
     }
 
@@ -244,7 +244,7 @@ impl MainCanvas {
             RosterElement::ElemCharacter(character) => character.points,
             RosterElement::ElemUnit(unit) => unit.points,
             RosterElement::ElemSupport(support) => support.points,
-            RosterElement::ElemOther((_, value, _)) => *value,
+            RosterElement::ElemOther((_, value, _, _)) => *value,
         }
     }
     
@@ -253,7 +253,7 @@ impl MainCanvas {
             RosterElement::ElemCharacter(_) => "character.png".to_string(), // TODO TBR Unused
             RosterElement::ElemUnit(unit) => unit.image.clone(), // TODO TBR Unused
             RosterElement::ElemSupport(_) => "support.png".to_string(),// TODO TBR Unused
-            RosterElement::ElemOther((_, _, image)) => image.clone(),
+            RosterElement::ElemOther((_, _, _, image)) => image.clone(),
         }
     }
 

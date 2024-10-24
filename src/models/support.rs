@@ -1,7 +1,7 @@
 use super::element::Element;
 use serde::{Serialize, Deserialize};
 
-#[derive(Clone, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
 pub struct Support {
     pub name : String,
     pub points : u32,

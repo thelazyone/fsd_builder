@@ -19,7 +19,6 @@ use web_sys::console;
 
 // A common definition for all messages:
 use crate::shared_messages::SharedMessage;
-use crate::shared_messages::GenericElementType;
 
 use crate::models::roster::RosterElement;
 
@@ -35,7 +34,7 @@ pub struct App{
     roster: Rc<RefCell<Roster>>,
 
     // Right Bar Model:
-    right_bar_model: Vec<GenericElementType>,
+    right_bar_model: Vec<RosterElement>,
 
     // input file
     file_input_ref: NodeRef,
@@ -71,7 +70,7 @@ impl Component for App {
         
         App {
             roster: Rc::new(RefCell::new(Roster::new().into())),
-            right_bar_model: Vec::<GenericElementType>::new(),
+            right_bar_model: Vec::<RosterElement>::new(),
             file_input_ref: NodeRef::default(),
             is_dark_mode: false,
             selected_index: None,
@@ -148,24 +147,24 @@ impl Component for App {
 
             SharedMessage::ShowUnits(faction) => {
                 self.right_bar_model = armylist::ArmyList::new(faction).get_units().
-                    into_iter().map(|elem| {elem}).collect();
+                    into_iter().map(|elem| {elem.into()}).collect();
                 true
             }
 
             SharedMessage::ShowCharacters(faction) => {
                 self.right_bar_model = armylist::ArmyList::new(faction).get_characters().
-                    into_iter().map(|elem| {elem}).collect();
+                    into_iter().map(|elem| {elem.into()}).collect();
                 true
             }
 
             SharedMessage::ShowSupports(faction) => {
                 self.right_bar_model = armylist::ArmyList::new(faction).get_supports().
-                    into_iter().map(|elem| {elem}).collect();
+                    into_iter().map(|elem| {elem.into()}).collect();
                 true
             }
     
-            SharedMessage::AddToRoster(generic_element) => {
-                self.roster.borrow_mut().add_element(RosterElement::ElemOther(generic_element).into()); // Implement the add_element method
+            SharedMessage::AddToRoster(element) => {
+                self.roster.borrow_mut().add_element(element); // Implement the add_element method
                 ctx.link().callback(|_| SharedMessage::NotifyRosterUpdated).emit(());
                 true
             }
@@ -173,11 +172,19 @@ impl Component for App {
             SharedMessage::AddToElement(target_index, element_to_attach) => {
 
                 let mut roster_ref = self.roster.borrow_mut();
+                console::log_1(&format!("AddToElement Called. Target index is {:?}.", target_index).into());
+                console::log_1(&format!("Elem to add is {:?}.", element_to_attach).into());
 
                 if let Some(target_element) = roster_ref.elements.get_mut(target_index) {
+                    console::log_1(&format!("index found. Target elem is {:?}.", target_element).into());
+
                     if let RosterElement::ElemUnit(unit) = target_element {
-                        unit.attached_elements.push(element_to_attach.0.clone());
-                    } else {
+                        if let RosterElement::ElemCharacter(character) = element_to_attach{
+                            unit.attached_elements.push(character.name.clone()); 
+                            console::log_1(&format!("Added Character.").into());
+                        }
+                    }else {
+                        console::log_1(&format!("Can't add elements to non-units.").into());
                         // Handle non-unit target elements if necessary
                     }
                 }
@@ -241,7 +248,8 @@ impl Component for App {
                 <div class="right-bar">
                     <RightBar 
                         model = {self.right_bar_model.clone()}
-                        on_add_to_roster = {ctx.link().callback(|generic_element| SharedMessage::AddToRoster(generic_element))}
+                        on_element_action={ctx.link().callback(|msg| msg)}
+                        selected_element_index={self.selected_index} 
                     />                    
                 </div>
 

@@ -1,9 +1,15 @@
 use yew::prelude::*;
 
+use crate::models::roster::RosterElement;
+
+// A common definition for all messages:
+use crate::shared_messages::SharedMessage;
+
 #[derive(Properties, Clone, PartialEq)]
 pub struct Props {
-    pub model: Vec<(String, u32, String)>,
-    pub on_add_to_roster: Callback<(String, u32, String)>,
+    pub model: Vec<RosterElement>,
+    pub on_element_action: Callback<SharedMessage>,
+    pub selected_element_index: Option<usize>, 
 }
 
 pub struct RightBar {}
@@ -24,15 +30,36 @@ impl Component for RightBar {
         html! {
             <div class="right-bar">
                 { 
-                    for ctx.props().model.iter().map(|(name, points, image)| {
-                        let name = name.clone();
-                        let points = *points;
-                        let image = image.clone();
-                        let callback = ctx.props().on_add_to_roster.clone();
+                    for ctx.props().model.iter().map(|elem| {
+                        let callback = ctx.props().on_element_action.clone();
+                        let selected_index = ctx.props().selected_element_index;
+
+                        let (name, points) = &elem.clone().get_name_and_points();
+                        let image = match &elem {
+                            RosterElement::ElemCharacter(_) => {"character.png".to_string()}
+                            RosterElement::ElemUnit(unit) => unit.image.clone(),
+                            RosterElement::ElemSupport(_) => {"support.png".to_string()}
+                            _ => {"".to_string()}
+                        };
                         let button_string = name.clone().to_uppercase();
-                        html!{
-                            <button onclick={Callback::from(move |_| callback.emit((name.clone(), points, image.clone())))}>
-                                { button_string}<br />{ format!("{:?} Points", points) }
+                        
+                        let elem = elem.clone();
+
+                        html! {
+                            <button
+                                onclick={Callback::from(move |_| {
+                                    if let Some(index) = selected_index {
+                                        // If an element is selected, send AddToElement
+                                        callback.emit(SharedMessage::AddToElement(index, elem.clone()));
+                                    } else {
+                                        // No element selected, add to roster
+                                        callback.emit(SharedMessage::AddToRoster(elem.clone()));
+                                    }
+                                })}
+                                >
+                                { name.to_uppercase() }
+                                <br />
+                                { format!("{} Points", &points) }
                             </button>
                         }
                     })

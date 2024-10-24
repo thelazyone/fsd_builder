@@ -3,7 +3,7 @@ use std::string;
 use super::element::Element;
 use serde::{Serialize, Deserialize};
 
-#[derive(Clone, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
 pub struct Character {
     pub name : String,
     pub points : u32,
