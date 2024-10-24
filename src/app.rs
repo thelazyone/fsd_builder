@@ -19,7 +19,6 @@ use web_sys::console;
 
 // A common definition for all messages:
 use crate::shared_messages::SharedMessage;
-use crate::shared_messages::GenericElementType;
 
 use crate::models::roster::RosterElement;
 
@@ -35,13 +34,16 @@ pub struct App{
     roster: Rc<RefCell<Roster>>,
 
     // Right Bar Model:
-    right_bar_model: Vec<GenericElementType>,
+    right_bar_model: Vec<RosterElement>,
 
     // input file
     file_input_ref: NodeRef,
 
     // Dark/light mode
     is_dark_mode: bool,
+
+    // Currently selected element
+    selected_index: Option<usize>,
 }
 
 
@@ -68,9 +70,10 @@ impl Component for App {
         
         App {
             roster: Rc::new(RefCell::new(Roster::new().into())),
-            right_bar_model: Vec::<GenericElementType>::new(),
+            right_bar_model: Vec::<RosterElement>::new(),
             file_input_ref: NodeRef::default(),
             is_dark_mode: false,
+            selected_index: None,
         }
     }
 
@@ -144,32 +147,86 @@ impl Component for App {
 
             SharedMessage::ShowUnits(faction) => {
                 self.right_bar_model = armylist::ArmyList::new(faction).get_units().
-                    into_iter().map(|elem| {elem}).collect();
+                    into_iter().map(|elem| {elem.into()}).collect();
                 true
             }
 
             SharedMessage::ShowCharacters(faction) => {
                 self.right_bar_model = armylist::ArmyList::new(faction).get_characters().
-                    into_iter().map(|elem| {elem}).collect();
+                    into_iter().map(|elem| {elem.into()}).collect();
                 true
             }
 
             SharedMessage::ShowSupports(faction) => {
                 self.right_bar_model = armylist::ArmyList::new(faction).get_supports().
-                    into_iter().map(|elem| {elem}).collect();
+                    into_iter().map(|elem| {elem.into()}).collect();
                 true
             }
     
-            SharedMessage::AddToRoster(generic_element) => {
-                self.roster.borrow_mut().add_element(RosterElement::ElemOther(generic_element).into()); // Implement the add_element method
+            SharedMessage::AddToRoster(element) => {
+                self.roster.borrow_mut().add_element(element); // Implement the add_element method
+                ctx.link().callback(|_| SharedMessage::NotifyRosterUpdated).emit(());
+                true
+            }
+
+            SharedMessage::AddToElement(target_index, element_to_attach) => {
+
+                let mut roster_ref = self.roster.borrow_mut();
+                console::log_1(&format!("AddToElement Called. Target index is {:?}.", target_index).into());
+                console::log_1(&format!("Elem to add is {:?}.", element_to_attach).into());
+
+                if let Some(target_element) = roster_ref.elements.get_mut(target_index) {
+                    console::log_1(&format!("index found. Target elem is {:?}.", target_element).into());
+
+                    if let RosterElement::ElemUnit(unit) = target_element {
+                        if let RosterElement::ElemCharacter(character) = element_to_attach{
+                            unit.attached_elements.push(RosterElement::ElemCharacter(character)); 
+                            console::log_1(&format!("Added Character.").into());
+                        }
+                    }else {
+                        console::log_1(&format!("Can't add elements to non-units.").into());
+                        // Handle non-unit target elements if necessary
+                    }
+                }
+
                 ctx.link().callback(|_| SharedMessage::NotifyRosterUpdated).emit(());
                 true
             }
             
+            SharedMessage::RemoveCharacterFromElement(index) => {
+                let mut roster_ref = self.roster.borrow_mut();
+                if let Some(target_element) = roster_ref.elements.get_mut(index) {
+                    if let RosterElement::ElemUnit(unit) = target_element {
+                        unit.attached_elements.clear();
+                        // TODO implement it as follows, after setting the attached_elements as actual RosterElements
+                        //unit.attached_elements.retain(|elem| !matches!(elem, RosterElement::ElemCharacter(_)));
+                    }
+                }
+                ctx.link().callback(|_| SharedMessage::NotifyRosterUpdated).emit(());
+                true
+            }
+
             SharedMessage::ToggleTheme => {
                 self.is_dark_mode = !self.is_dark_mode;
                 console::log_1(&"calling Update".into());
                 true // Return true to re-render the component
+            }
+
+            SharedMessage::SelectElement(index) => {
+                console::log_1(&format!("Selecting element {:?}.", index).into());
+
+                if self.selected_index == Some(index) {
+                    self.selected_index = None;
+                }
+                else {
+                    self.selected_index = Some(index); 
+                }
+                true
+            }
+
+            SharedMessage::DeselectElements => {
+                self.selected_index = None;
+                true
             }
 
             _ => false // Passing to the child objects to be handled.
@@ -177,6 +234,20 @@ impl Component for App {
     }
 
     fn view(&self, ctx: &Context<Self>) -> Html {
+
+        // Checking the information on the selected unit to pass to the right_bar
+        let (selected_element_is_unit, selected_unit_has_character) = if let Some(index) = self.selected_index {
+            if let Some(element) = self.roster.borrow().elements.get(index) {
+                match element {
+                    RosterElement::ElemUnit(unit) => (true, !unit.attached_elements.is_empty()),
+                    _ => (false, false),
+                }
+            } else {
+                (false, false)
+            }
+        } else {
+            (false, false)
+        };
 
         html! {
             <div class={if self.is_dark_mode { "app dark-mode" } else { "app" }}>
@@ -202,12 +273,18 @@ impl Component for App {
                         on_roster_updated = {ctx.link().callback(|_| SharedMessage::NotifyRosterUpdated)}
                         is_dark_mode = {self.is_dark_mode}
                         on_reorder = {ctx.link().callback(|_| SharedMessage::ReorderElements)} 
+                        selected_index={self.selected_index} 
+                        on_select_element={ctx.link().callback(|index| SharedMessage::SelectElement(index))} 
                         />
                 </div>
                 <div class="right-bar">
                     <RightBar 
                         model = {self.right_bar_model.clone()}
-                        on_add_to_roster = {ctx.link().callback(|generic_element| SharedMessage::AddToRoster(generic_element))}
+                        on_element_action={ctx.link().callback(|msg| msg)}
+                        selected_element_index={self.selected_index} 
+                        selected_element_is_unit={selected_element_is_unit}
+                        selected_unit_has_character={selected_unit_has_character}
+                        on_deselect_elements={ctx.link().callback(|_| SharedMessage::DeselectElements)}  
                     />                    
                 </div>
 

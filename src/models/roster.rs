@@ -13,12 +13,12 @@ use serde::de;
 use web_sys::console;
 
 
-#[derive(Clone, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
 pub enum RosterElement {
     ElemCharacter(Character),
     ElemUnit(Unit),
     ElemSupport(Support),
-    ElemOther((String, u32, String)),
+    ElemOther((String, u32, Vec<String>, String)),
 }
 
 impl From<Character> for RosterElement {
@@ -36,6 +36,17 @@ impl From<Unit> for RosterElement {
 impl From<Support> for RosterElement {
     fn from(support: Support) -> Self {
         RosterElement::ElemSupport(support)
+    }
+}
+
+impl RosterElement {
+    pub fn get_name_and_points(&self) -> (String, u32) {
+        match self {
+            RosterElement::ElemCharacter(elem) => {(elem.name.clone(), elem.points)}
+            RosterElement::ElemUnit(elem) => {(elem.name.clone(), elem.points)}
+            RosterElement::ElemSupport(elem) => {(elem.name.clone(), elem.points)}
+            RosterElement::ElemOther(elem) => {(elem.0.clone(), elem.1)}
+        }
     }
 }
 

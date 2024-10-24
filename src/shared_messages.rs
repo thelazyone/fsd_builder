@@ -1,6 +1,7 @@
 use crate::models::armylist::Faction;
+use crate::models::roster::RosterElement;
 
-pub type GenericElementType = (String, u32, String);
+// pub type GenericElementType = (String, u32, Vec<String>, String);
 
 pub enum SharedMessage {
     NoOp, // Dummy message for no-operation
@@ -14,7 +15,9 @@ pub enum SharedMessage {
     ShowCharacters(Faction),
     ShowSupports(Faction),
 
-    AddToRoster(GenericElementType),
+    AddToRoster(RosterElement),
+    AddToElement(usize /* Index of the element */, RosterElement),
+    RemoveCharacterFromElement(usize),
     NotifyRosterUpdated,
     DeleteElement(usize),
     ReorderElements,
@@ -25,6 +28,8 @@ pub enum SharedMessage {
     ShowTooltip(usize),
     MoveTooltip(i32, i32),
     HideTooltip,
+    SelectElement(usize),
+    DeselectElements,
 
     ToggleTheme,
 

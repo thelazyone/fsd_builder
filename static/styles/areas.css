@@ -55,9 +55,9 @@
 .content-container {
     display: flex;
     flex-direction: column;
-    justify-content: center; /* This will vertically center the content */
-    align-items: center; /* This will horizontally center the content */
-    height: 100%; /* Take up the full height of the parent */
+    justify-content: center;
+    align-items: center; 
+    height: 100%;
 }
 
 .hoverable-area:hover::before {
@@ -74,6 +74,10 @@
 
 .hoverable-area:hover {
     background-color: #eee; /* Darker grey when hovered */
+}
+
+.hoverable-area.selected {
+    background-color: #ddd; /* Darker grey when hovered */
 }
 
 .total-points {
@@ -157,4 +161,14 @@
     font-size: 24px;
     font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
     font-weight: bold;
+}
+
+.attached-elements {
+    margin-top: 5px;
+    padding-left: 10px;
+}
+
+.attached-element-name {
+    font-size: 0.9em;
+    color: gray;
 }

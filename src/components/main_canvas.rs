@@ -20,6 +20,8 @@ pub struct Props {
     pub on_roster_updated: Callback<()>,
     pub is_dark_mode: bool,
     pub on_reorder: Callback<SharedMessage>,
+    pub selected_index: Option<usize>,    
+    pub on_select_element: Callback<usize>, 
 }
 
 pub struct MainCanvas {
@@ -27,7 +29,8 @@ pub struct MainCanvas {
     tooltip_visible: bool,
     tooltip_content: Option<Html>,
     tooltip_x: i32,
-    tooltip_y: i32,}
+    tooltip_y: i32,    
+}
 
 impl Component for MainCanvas {
     type Message = SharedMessage;
@@ -45,6 +48,7 @@ impl Component for MainCanvas {
 
     fn update(&mut self, ctx: &Context<Self>, msg: Self::Message) -> bool {
         match msg {
+
             SharedMessage::NotifyRosterUpdated => {
                 console::log_1(&"Roster updated notification received in MAIN CANVAS".into());
                 true
@@ -80,16 +84,16 @@ impl Component for MainCanvas {
                         RosterElement::ElemCharacter(character) => new_roster_characters.add_element(RosterElement::ElemCharacter(character.clone())),
                         RosterElement::ElemUnit(unit) => new_roster_units.add_element(RosterElement::ElemUnit(unit.clone())),
                         RosterElement::ElemSupport(support) => new_roster_supports.add_element(RosterElement::ElemSupport(support.clone())),
-                        RosterElement::ElemOther((name, points, image)) => {
+                        RosterElement::ElemOther((name, points, attached, image)) => {
                             if image.contains("character.png") {
                                 // Handle character case
-                                new_roster_characters.add_element(RosterElement::ElemOther((name.clone(), *points, image.clone())));
+                                new_roster_characters.add_element(RosterElement::ElemOther((name.clone(), *points, Vec::<String>::new(), image.clone())));
                             } else if image.contains("support.png") {
                                 // Handle support case
-                                new_roster_supports.add_element(RosterElement::ElemOther((name.clone(), *points, image.clone())));
+                                new_roster_supports.add_element(RosterElement::ElemOther((name.clone(), *points, Vec::<String>::new(), image.clone())));
                             } else {
                                 // Handle other cases
-                                new_roster_units.add_element(RosterElement::ElemOther((name.clone(), *points, image.clone())));
+                                new_roster_units.add_element(RosterElement::ElemOther((name.clone(), *points, attached.clone(), image.clone())));
                             }
                         },
                             
@@ -150,6 +154,11 @@ impl Component for MainCanvas {
                 {
                     for roster.elements.iter().enumerate().map(|(i, elem)| {
 
+                        // Checking for selected elements, with a different css look.
+                        let is_selected = ctx.props().selected_index == Some(i);
+                        let element_class = if is_selected {console::log_1(&"Selected".into()); "hoverable-area selected" } else { "hoverable-area" };
+
+                        
                         // Preparing a couple of variables for the conditional below.
                         let image_path = self.get_image(elem);
                         let image_class = if {ctx.props().is_dark_mode} && {image_path == "character.png" || image_path == "support.png"} {
@@ -159,11 +168,14 @@ impl Component for MainCanvas {
                         };
 
                         html!{
-                            <div class="hoverable-area"
-                                 onmouseover={ctx.link().callback(move |_| SharedMessage::ShowTooltip(i))}
-                                 onmousemove={ctx.link().callback(move |e: MouseEvent| SharedMessage::MoveTooltip(e.client_x(), e.client_y()))}
-                                 onmouseout={ctx.link().callback(|_| SharedMessage::HideTooltip)}
-                                 ondblclick={ctx.link().callback(move |_| SharedMessage::DeleteElement(i))}>
+                            <div class={element_class}
+                                //onclick={ctx.link().callback(move |_| SharedMessage::SelectElement(i))}
+                                onclick={ctx.props().on_select_element.reform(move |_| i)}
+
+                                onmouseover={ctx.link().callback(move |_| SharedMessage::ShowTooltip(i))}
+                                onmousemove={ctx.link().callback(move |e: MouseEvent| SharedMessage::MoveTooltip(e.client_x(), e.client_y()))}
+                                onmouseout={ctx.link().callback(|_| SharedMessage::HideTooltip)}
+                                ondblclick={ctx.link().callback(move |_| SharedMessage::DeleteElement(i))}>
                                 <div class="content-container">
                                     { self.get_element_name(elem) }
                                     <img src={format!("./static/images/{}", image_path)} class={image_class} />
@@ -174,6 +186,7 @@ impl Component for MainCanvas {
                                             "1 Point".to_string()
                                         }}
                                     </div>
+                                    { self.render_attached_elements(elem) }
                                 </div>
                             </div>
                         }
@@ -210,17 +223,17 @@ impl MainCanvas {
     // Simple rendering of the various elements of the roster.
     fn get_element_name(&self, elem: &RosterElement) -> String {
         match elem {
-            RosterElement::ElemCharacter(character) => format!("Character: {:?}", character.name),
-            RosterElement::ElemUnit(unit) => format!("Unit: {:?}", unit.name),
-            RosterElement::ElemSupport(support) => format!("Support: {:?}", support.name),
-            RosterElement::ElemOther((name, _ ,_)) => format!("{}", name),
+            RosterElement::ElemCharacter(character) => character.name.clone(),
+            RosterElement::ElemUnit(unit) => unit.name.clone(),
+            RosterElement::ElemSupport(support) => support.name.clone(),
+            RosterElement::ElemOther((name, _ , _, _)) => format!("{}", name),
         }
     }
 
     fn get_tooltip_content(&self, _ctx: &Context<Self>, elem: &RosterElement, _index: usize) -> Html {
         html! {
             <>
-                { format!("Details about: {}", self.get_element_name(elem)) }
+                //{ format!("Details about: {}", self.get_element_name(elem)) }
                 <div>{ "Double click to delete" }</div>
             </>
         }
@@ -229,9 +242,10 @@ impl MainCanvas {
     fn get_element_points(&self, elem: &RosterElement) -> u32 {
         match elem {
             RosterElement::ElemCharacter(character) => character.points,
-            RosterElement::ElemUnit(unit) => unit.points,
+            RosterElement::ElemUnit(unit) => {
+                unit.attached_elements.iter().map(|elem| elem.get_name_and_points().1).sum::<u32>() + unit.points},
             RosterElement::ElemSupport(support) => support.points,
-            RosterElement::ElemOther((_, value, _)) => *value,
+            RosterElement::ElemOther((_, value, _, _)) => *value,
         }
     }
     
@@ -240,7 +254,46 @@ impl MainCanvas {
             RosterElement::ElemCharacter(_) => "character.png".to_string(), // TODO TBR Unused
             RosterElement::ElemUnit(unit) => unit.image.clone(), // TODO TBR Unused
             RosterElement::ElemSupport(_) => "support.png".to_string(),// TODO TBR Unused
-            RosterElement::ElemOther((_, _, image)) => image.clone(),
+            RosterElement::ElemOther((_, _, _, image)) => image.clone(),
+        }
+    }
+
+    fn render_attached_elements(&self, elem: &RosterElement) -> Html {
+        match elem {
+            RosterElement::ElemUnit(unit) => {
+                if !unit.attached_elements.is_empty() {
+                    html! {
+                        <div class="attached-elements">
+                            { for unit.attached_elements.iter().map(|element| html!{
+                                <div class="attached-element-name">{ element.get_name_and_points().0 }</div>
+                            }) }
+                        </div>
+                    }
+                } else {
+                    html! {}
+                }
+            },
+            _ => html! {}
+        }
+    }
+
+    // Deciding the style of the image based on the image type.
+    fn get_image_class(&self, ctx: &Context<Self>, elem: &RosterElement) -> &str {
+        let image_path = self.get_image(elem);
+        if ctx.props().is_dark_mode && (image_path == "character.png" || image_path == "support.png") {
+            "inverted-roster-image"
+        } else {
+            "roster-image"
+        }
+    }
+
+    // Simple logic to correctly format the point label.
+    fn get_points_label(&self, elem: &RosterElement) -> String {
+        let points = self.get_element_points(elem);
+        if points > 1 {
+            format!("{} Points", points)
+        } else {
+            "1 Point".to_string()
         }
     }
 
