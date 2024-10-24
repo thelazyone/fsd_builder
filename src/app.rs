@@ -42,6 +42,9 @@ pub struct App{
 
     // Dark/light mode
     is_dark_mode: bool,
+
+    // Currently selected element
+    selected_index: Option<usize>,
 }
 
 
@@ -71,6 +74,7 @@ impl Component for App {
             right_bar_model: Vec::<GenericElementType>::new(),
             file_input_ref: NodeRef::default(),
             is_dark_mode: false,
+            selected_index: None,
         }
     }
 
@@ -188,6 +192,18 @@ impl Component for App {
                 true // Return true to re-render the component
             }
 
+            SharedMessage::SelectElement(index) => {
+                console::log_1(&format!("Selecting element {:?}.", index).into());
+
+                if self.selected_index == Some(index) {
+                    self.selected_index = None;
+                }
+                else {
+                    self.selected_index = Some(index); 
+                }
+                true
+            },
+
             _ => false // Passing to the child objects to be handled.
         }    
     }
@@ -218,6 +234,8 @@ impl Component for App {
                         on_roster_updated = {ctx.link().callback(|_| SharedMessage::NotifyRosterUpdated)}
                         is_dark_mode = {self.is_dark_mode}
                         on_reorder = {ctx.link().callback(|_| SharedMessage::ReorderElements)} 
+                        selected_index={self.selected_index} 
+                        on_select_element={ctx.link().callback(|index| SharedMessage::SelectElement(index))} 
                         />
                 </div>
                 <div class="right-bar">

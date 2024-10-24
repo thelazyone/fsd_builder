@@ -20,6 +20,8 @@ pub struct Props {
     pub on_roster_updated: Callback<()>,
     pub is_dark_mode: bool,
     pub on_reorder: Callback<SharedMessage>,
+    pub selected_index: Option<usize>,    
+    pub on_select_element: Callback<usize>, 
 }
 
 pub struct MainCanvas {
@@ -28,7 +30,6 @@ pub struct MainCanvas {
     tooltip_content: Option<Html>,
     tooltip_x: i32,
     tooltip_y: i32,    
-    selected_index: Option<usize>,
 }
 
 impl Component for MainCanvas {
@@ -42,7 +43,6 @@ impl Component for MainCanvas {
             tooltip_content: None,
             tooltip_x: 0,
             tooltip_y: 0,
-            selected_index: None,
         }
     }
 
@@ -136,18 +136,6 @@ impl Component for MainCanvas {
                 self.tooltip_visible = false;
                 true
             }
-
-            SharedMessage::SelectElement(index) => {
-                console::log_1(&format!("Selecting element {:?}.", index).into());
-
-                if self.selected_index == Some(index) {
-                    self.selected_index = None;
-                }
-                else {
-                    self.selected_index = Some(index); 
-                }
-                true
-            },
             
             _ => panic!("Wrong message received!")
         }
@@ -167,10 +155,10 @@ impl Component for MainCanvas {
                     for roster.elements.iter().enumerate().map(|(i, elem)| {
 
                         // Checking for selected elements, with a different css look.
-                        let is_selected = self.selected_index == Some(i);
-                        let element_class = if is_selected {"hoverable-area selected" } else { "hoverable-area" };
+                        let is_selected = ctx.props().selected_index == Some(i);
+                        let element_class = if is_selected {console::log_1(&"Selected".into()); "hoverable-area selected" } else { "hoverable-area" };
 
-
+                        
                         // Preparing a couple of variables for the conditional below.
                         let image_path = self.get_image(elem);
                         let image_class = if {ctx.props().is_dark_mode} && {image_path == "character.png" || image_path == "support.png"} {
@@ -181,7 +169,9 @@ impl Component for MainCanvas {
 
                         html!{
                             <div class={element_class}
-                                onclick={ctx.link().callback(move |_| SharedMessage::SelectElement(i))}
+                                //onclick={ctx.link().callback(move |_| SharedMessage::SelectElement(i))}
+                                onclick={ctx.props().on_select_element.reform(move |_| i)}
+
                                 onmouseover={ctx.link().callback(move |_| SharedMessage::ShowTooltip(i))}
                                 onmousemove={ctx.link().callback(move |e: MouseEvent| SharedMessage::MoveTooltip(e.client_x(), e.client_y()))}
                                 onmouseout={ctx.link().callback(|_| SharedMessage::HideTooltip)}
@@ -272,9 +262,9 @@ impl MainCanvas {
             RosterElement::ElemUnit(unit) => {
                 if !unit.attached_elements.is_empty() {
                     html! {
-                        <div class="attached-cards">
+                        <div class="attached-elements">
                             { for unit.attached_elements.iter().map(|card_name| html!{
-                                <div class="attached-card-name">{ card_name }</div>
+                                <div class="attached-element-name">{ card_name }</div>
                             }) }
                         </div>
                     }
@@ -285,4 +275,25 @@ impl MainCanvas {
             _ => html! {}
         }
     }
+
+    // Deciding the style of the image based on the image type.
+    fn get_image_class(&self, ctx: &Context<Self>, elem: &RosterElement) -> &str {
+        let image_path = self.get_image(elem);
+        if ctx.props().is_dark_mode && (image_path == "character.png" || image_path == "support.png") {
+            "inverted-roster-image"
+        } else {
+            "roster-image"
+        }
+    }
+
+    // Simple logic to correctly format the point label.
+    fn get_points_label(&self, elem: &RosterElement) -> String {
+        let points = self.get_element_points(elem);
+        if points > 1 {
+            format!("{} Points", points)
+        } else {
+            "1 Point".to_string()
+        }
+    }
+
 }
