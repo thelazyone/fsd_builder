@@ -10,6 +10,8 @@ pub struct Props {
     pub model: Vec<RosterElement>,
     pub on_element_action: Callback<SharedMessage>,
     pub selected_element_index: Option<usize>, 
+    pub selected_element_is_unit: bool,
+    pub selected_unit_has_character: bool,
     pub on_deselect_elements: Callback<SharedMessage>,
 }
 
@@ -32,6 +34,10 @@ impl Component for RightBar {
             <div class="right-bar">
                 { 
                     for ctx.props().model.iter().map(|elem| {
+
+                        // Duplicating the elem for some ownership reason, not entirely clear.
+                        let elem = elem.clone();
+
                         let callback = ctx.props().on_element_action.clone();
                         let selected_index = ctx.props().selected_element_index;
 
@@ -43,10 +49,19 @@ impl Component for RightBar {
                             _ => {"".to_string()}
                         };
 
-                        let elem = elem.clone();
+                        // Must check what to grey out
+                        let is_character = matches!(elem, RosterElement::ElemCharacter(_));
+                        let mut disable_button = false;
+                        if is_character {
+                            // Disable if no unit is selected or unit already has a character
+                            if !ctx.props().selected_element_is_unit || ctx.props().selected_unit_has_character {
+                                disable_button = true;
+                            }
+                        }
                         
                         html! {
                             <button
+                                disabled={disable_button}
                                 onclick={Callback::from(move |_| {
                                     let mut should_be_attached: bool = false;
                                     if let Some(index) = selected_index {
@@ -69,6 +84,24 @@ impl Component for RightBar {
                             </button>
                         }
                     })
+                }
+                // Add "Remove Character" button if applicable
+                {
+                    if ctx.props().selected_element_is_unit && ctx.props().selected_unit_has_character {
+                        let callback = ctx.props().on_element_action.clone();
+                        let selected_index = ctx.props().selected_element_index.unwrap();
+                        html! {
+                            <button
+                                onclick={Callback::from(move |_| {
+                                    callback.emit(SharedMessage::RemoveCharacterFromElement(selected_index));
+                                })}
+                                >
+                                { "REMOVE CHARACTER" }
+                            </button>
+                        }
+                    } else {
+                        html! {}
+                    }
                 }
             </div>
         }

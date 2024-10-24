@@ -17,6 +17,7 @@ pub enum SharedMessage {
 
     AddToRoster(RosterElement),
     AddToElement(usize /* Index of the element */, RosterElement),
+    RemoveCharacterFromElement(usize),
     NotifyRosterUpdated,
     DeleteElement(usize),
     ReorderElements,

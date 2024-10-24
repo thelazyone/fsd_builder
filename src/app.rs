@@ -193,6 +193,19 @@ impl Component for App {
                 true
             }
             
+            SharedMessage::RemoveCharacterFromElement(index) => {
+                let mut roster_ref = self.roster.borrow_mut();
+                if let Some(target_element) = roster_ref.elements.get_mut(index) {
+                    if let RosterElement::ElemUnit(unit) = target_element {
+                        unit.attached_elements.clear();
+                        // TODO implement it as follows, after setting the attached_elements as actual RosterElements
+                        //unit.attached_elements.retain(|elem| !matches!(elem, RosterElement::ElemCharacter(_)));
+                    }
+                }
+                ctx.link().callback(|_| SharedMessage::NotifyRosterUpdated).emit(());
+                true
+            }
+
             SharedMessage::ToggleTheme => {
                 self.is_dark_mode = !self.is_dark_mode;
                 console::log_1(&"calling Update".into());
@@ -221,6 +234,20 @@ impl Component for App {
     }
 
     fn view(&self, ctx: &Context<Self>) -> Html {
+
+        // Checking the information on the selected unit to pass to the right_bar
+        let (selected_element_is_unit, selected_unit_has_character) = if let Some(index) = self.selected_index {
+            if let Some(element) = self.roster.borrow().elements.get(index) {
+                match element {
+                    RosterElement::ElemUnit(unit) => (true, !unit.attached_elements.is_empty()),
+                    _ => (false, false),
+                }
+            } else {
+                (false, false)
+            }
+        } else {
+            (false, false)
+        };
 
         html! {
             <div class={if self.is_dark_mode { "app dark-mode" } else { "app" }}>
@@ -255,6 +282,8 @@ impl Component for App {
                         model = {self.right_bar_model.clone()}
                         on_element_action={ctx.link().callback(|msg| msg)}
                         selected_element_index={self.selected_index} 
+                        selected_element_is_unit={selected_element_is_unit}
+                        selected_unit_has_character={selected_unit_has_character}
                         on_deselect_elements={ctx.link().callback(|_| SharedMessage::DeselectElements)}  
                     />                    
                 </div>
