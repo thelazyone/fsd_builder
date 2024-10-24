@@ -4,7 +4,7 @@
 use crate::models::character::Character;
 use crate::models::unit::Unit;
 use crate::models::support::Support;
-use crate::models::element::Element;
+use crate::models::roster::RosterElement;
 
 // For serialization
 use serde::{Serialize, Deserialize};
@@ -55,7 +55,7 @@ impl ArmyList {
             supports: Vec::<Support>::new(),
         };
 
-        let no_vec = Vec::<String>::new();
+        let no_vec = Vec::<RosterElement>::new();
 
         match faction {
 

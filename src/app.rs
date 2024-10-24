@@ -180,7 +180,7 @@ impl Component for App {
 
                     if let RosterElement::ElemUnit(unit) = target_element {
                         if let RosterElement::ElemCharacter(character) = element_to_attach{
-                            unit.attached_elements.push(character.name.clone()); 
+                            unit.attached_elements.push(RosterElement::ElemCharacter(character)); 
                             console::log_1(&format!("Added Character.").into());
                         }
                     }else {

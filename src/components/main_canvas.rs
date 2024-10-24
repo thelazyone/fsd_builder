@@ -263,8 +263,8 @@ impl MainCanvas {
                 if !unit.attached_elements.is_empty() {
                     html! {
                         <div class="attached-elements">
-                            { for unit.attached_elements.iter().map(|card_name| html!{
-                                <div class="attached-element-name">{ card_name }</div>
+                            { for unit.attached_elements.iter().map(|element| html!{
+                                <div class="attached-element-name">{ element.clone().get_name_and_points().0 }</div>
                             }) }
                         </div>
                     }
