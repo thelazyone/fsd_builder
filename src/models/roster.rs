@@ -40,12 +40,12 @@ impl From<Support> for RosterElement {
 }
 
 impl RosterElement {
-    pub fn get_name_and_points(self) -> (String, u32) {
+    pub fn get_name_and_points(&self) -> (String, u32) {
         match self {
-            RosterElement::ElemCharacter(elem) => {(elem.name, elem.points)}
-            RosterElement::ElemUnit(elem) => {(elem.name, elem.points)}
-            RosterElement::ElemSupport(elem) => {(elem.name, elem.points)}
-            RosterElement::ElemOther(elem) => {(elem.0, elem.1)}
+            RosterElement::ElemCharacter(elem) => {(elem.name.clone(), elem.points)}
+            RosterElement::ElemUnit(elem) => {(elem.name.clone(), elem.points)}
+            RosterElement::ElemSupport(elem) => {(elem.name.clone(), elem.points)}
+            RosterElement::ElemOther(elem) => {(elem.0.clone(), elem.1)}
         }
     }
 }

@@ -242,7 +242,8 @@ impl MainCanvas {
     fn get_element_points(&self, elem: &RosterElement) -> u32 {
         match elem {
             RosterElement::ElemCharacter(character) => character.points,
-            RosterElement::ElemUnit(unit) => unit.points,
+            RosterElement::ElemUnit(unit) => {
+                unit.attached_elements.iter().map(|elem| elem.get_name_and_points().1).sum::<u32>() + unit.points},
             RosterElement::ElemSupport(support) => support.points,
             RosterElement::ElemOther((_, value, _, _)) => *value,
         }
@@ -264,7 +265,7 @@ impl MainCanvas {
                     html! {
                         <div class="attached-elements">
                             { for unit.attached_elements.iter().map(|element| html!{
-                                <div class="attached-element-name">{ element.clone().get_name_and_points().0 }</div>
+                                <div class="attached-element-name">{ element.get_name_and_points().0 }</div>
                             }) }
                         </div>
                     }
