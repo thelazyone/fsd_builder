@@ -223,9 +223,9 @@ impl MainCanvas {
     // Simple rendering of the various elements of the roster.
     fn get_element_name(&self, elem: &RosterElement) -> String {
         match elem {
-            RosterElement::ElemCharacter(character) => format!("Character: {:?}", character.name),
-            RosterElement::ElemUnit(unit) => format!("Unit: {:?}", unit.name),
-            RosterElement::ElemSupport(support) => format!("Support: {:?}", support.name),
+            RosterElement::ElemCharacter(character) => character.name.clone(),
+            RosterElement::ElemUnit(unit) => unit.name.clone(),
+            RosterElement::ElemSupport(support) => support.name.clone(),
             RosterElement::ElemOther((name, _ , _, _)) => format!("{}", name),
         }
     }
@@ -233,7 +233,7 @@ impl MainCanvas {
     fn get_tooltip_content(&self, _ctx: &Context<Self>, elem: &RosterElement, _index: usize) -> Html {
         html! {
             <>
-                { format!("Details about: {}", self.get_element_name(elem)) }
+                //{ format!("Details about: {}", self.get_element_name(elem)) }
                 <div>{ "Double click to delete" }</div>
             </>
         }
