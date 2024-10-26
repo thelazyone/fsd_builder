@@ -118,6 +118,7 @@ impl ArmyList {
                 new_list.units.push(Unit {              name: "Mobile Fortress".to_string(),                        points: 16,   attached_elements: no_vec.clone(),       image: "union/fortress.png".to_string()});
 
                 // Supports
+                new_list.supports.push(Support {        name: "Union Representative".to_string(),                   points: 5});
                 new_list.supports.push(Support {        name: "Assault Siren".to_string(),                          points: 5});
                 new_list.supports.push(Support {        name: "Double Shift".to_string(),                           points: 2});
                 new_list.supports.push(Support {        name: "Improvised Barrier".to_string(),                     points: 2});
